@@ -2,6 +2,9 @@ package fr.projects.online_checkout.paypal.exceptions;
 
 import com.paypal.base.rest.PayPalRESTException;
 import lombok.Getter;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -17,6 +20,11 @@ public class PaypalExceptionBuilder<T extends PayPalRESTException>{
 
   @Getter
   private List<T> exceptions = new ArrayList<>();
+  private Class<T> exceptionClass;
+
+  public PaypalExceptionBuilder(Class<T> exceptionClass) {
+    this.exceptionClass = exceptionClass;
+  }
 
   /**
    * Méthode permettant d'ajouter une nouvelle exception au builder
@@ -37,15 +45,25 @@ public class PaypalExceptionBuilder<T extends PayPalRESTException>{
    * Méthode permettant de construire une exception avec un message résumant les différentes erreurs de la liste des exceptions
    * @return
    */
-  public PayPalRESTException buildException(){
+  public T buildException(){
+
+    T exception = null;
 
     StringBuilder exceptionMessageBuilder = new StringBuilder();
 
     // TODO implémenter la méthode de construction de l'exception finale
 
 
+    try {
+      Constructor<T> constructor = exceptionClass.getConstructor(String.class);
+      exception = constructor.newInstance(exceptionMessageBuilder.toString());
+    } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+      e.printStackTrace();
+    }
+
     this.clear();
-    return new PayPalRESTException(exceptionMessageBuilder.toString());
+
+    return exception;
   }
 
   /**

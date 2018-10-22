@@ -2,6 +2,7 @@ package fr.projects.online_checkout.paypal.services;
 
 import com.paypal.api.payments.Authorization;
 import com.paypal.api.payments.Capture;
+import com.paypal.api.payments.Order;
 import com.paypal.api.payments.Payment;
 import com.paypal.base.rest.PayPalRESTException;
 import reactor.core.publisher.Mono;
@@ -45,6 +46,7 @@ public interface PaypalPaymentService {
    * @throws PayPalRESTException
    */
   Mono<Capture> capturePayment(Authorization authorization) throws PayPalRESTException;
+
 
 
 }

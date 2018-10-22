@@ -31,7 +31,7 @@ public class PaypalPaymentServiceImpl implements PaypalPaymentService {
   // CONSTRUCTEUR
   //********************************************************************************************************************
   public PaypalPaymentServiceImpl(PayPalConfig config) {
-    this.exceptionBuilder = new PaypalExceptionBuilder<>();
+    this.exceptionBuilder = new PaypalExceptionBuilder<>(PaypalPaymentException.class);
     this.config = config;
   }
 
