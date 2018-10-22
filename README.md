@@ -1,7 +1,9 @@
-# Online_checkout
-Service de paiement en ligne
+# SERVICE DE PAIEMENT EN LIGNE
+
 Paypal
+#
 MasterCard
+#
 Visa
 
 [![CircleCI](https://circleci.com/gh/henriSedjame/online_checkout/tree/develop.svg?style=svg)](https://circleci.com/gh/henriSedjame/online_checkout/tree/develop)
