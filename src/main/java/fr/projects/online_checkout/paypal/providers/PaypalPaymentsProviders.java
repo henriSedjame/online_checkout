@@ -18,6 +18,8 @@ import java.util.List;
 @Profile("dev")
 public class PaypalPaymentsProviders {
 
+
+
   /**
    * Methode de création d'un paiement par paypal
    * @return
@@ -61,8 +63,8 @@ public class PaypalPaymentsProviders {
      * 2 - en cas deretour après paiement
      */
     RedirectUrls redirectUrls = new RedirectUrls();
-    redirectUrls.setCancelUrl("http://localhost:8082/" + Routes.CANCEL);
-    redirectUrls.setReturnUrl("http://localhost:8082/" + Routes.EXECUTE);
+    redirectUrls.setCancelUrl(Routes.HOST + Routes.CANCEL);
+    redirectUrls.setReturnUrl(Routes.HOST + Routes.EXECUTE);
 
     /**
      * Créer un paiement
@@ -83,8 +85,8 @@ public class PaypalPaymentsProviders {
       .setPaymentMethod("paypal");
 
     RedirectUrls redirectUrls = new RedirectUrls()
-      .setCancelUrl("http://localhost:8082/" +Routes.CANCEL)
-      .setReturnUrl("http://localhost:8082/" + Routes.AUTHORIZE );
+      .setCancelUrl(Routes.HOST + Routes.CANCEL)
+      .setReturnUrl(Routes.HOST + Routes.AUTHORIZE );
 
     Details details = new Details()
       .setShipping("0.5")
@@ -116,8 +118,8 @@ public class PaypalPaymentsProviders {
       .setPaymentMethod("paypal");
 
     RedirectUrls redirectUrls = new RedirectUrls()
-      .setCancelUrl("http://localhost:8082/" + Routes.CANCEL)
-      .setReturnUrl("http://localhost:8082/"+ Routes.ORDER);
+      .setCancelUrl(Routes.HOST + Routes.CANCEL)
+      .setReturnUrl(Routes.HOST+ Routes.ORDER);
 
     Details details = new Details()
       .setShipping("0.5")

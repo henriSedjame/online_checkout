@@ -16,7 +16,6 @@ class RouterHandlersKt {
     @Autowired
     lateinit var paymentService: PaypalPaymentService;
 
-
     fun executePayment(request: ServerRequest) : Mono<ServerResponse> {
         val paymentId = request.queryParam(PaypalConstants.PAYMENT_ID).orElse(null);
         val payerId = request.queryParam(PaypalConstants.PAYER_ID).orElse(null);
