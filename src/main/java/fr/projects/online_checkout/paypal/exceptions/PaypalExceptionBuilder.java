@@ -80,6 +80,6 @@ public class PaypalExceptionBuilder<T extends PayPalRESTException>{
    * @return
    */
   public boolean hasException(){
-    return this.exceptions.isEmpty();
+    return !this.exceptions.isEmpty();
   }
 }

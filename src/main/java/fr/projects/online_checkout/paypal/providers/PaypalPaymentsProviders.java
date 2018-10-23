@@ -3,6 +3,7 @@ package fr.projects.online_checkout.paypal.providers;
 import com.paypal.api.payments.*;
 import fr.projects.online_checkout.paypal.configuration.PaypalIntents;
 import fr.projects.online_checkout.paypal.configuration.PaypalPaymentMethods;
+import fr.projects.online_checkout.paypal.controller.Routes;
 import org.springframework.context.annotation.Profile;
 
 import java.util.ArrayList;
@@ -60,8 +61,8 @@ public class PaypalPaymentsProviders {
      * 2 - en cas deretour après paiement
      */
     RedirectUrls redirectUrls = new RedirectUrls();
-    redirectUrls.setCancelUrl("http://localhost:8082/paypal/cancel");
-    redirectUrls.setReturnUrl("http://localhost:8082/paypal/payment/success");
+    redirectUrls.setCancelUrl("http://localhost:8082/" + Routes.CANCEL);
+    redirectUrls.setReturnUrl("http://localhost:8082/" + Routes.EXECUTE);
 
     /**
      * Créer un paiement
@@ -82,8 +83,8 @@ public class PaypalPaymentsProviders {
       .setPaymentMethod("paypal");
 
     RedirectUrls redirectUrls = new RedirectUrls()
-      .setCancelUrl("http://localhost:8082/paypal/cancel")
-      .setReturnUrl("http://localhost:8082/paypal/authorization/success");
+      .setCancelUrl("http://localhost:8082/" +Routes.CANCEL)
+      .setReturnUrl("http://localhost:8082/" + Routes.AUTHORIZE );
 
     Details details = new Details()
       .setShipping("0.5")
@@ -115,8 +116,8 @@ public class PaypalPaymentsProviders {
       .setPaymentMethod("paypal");
 
     RedirectUrls redirectUrls = new RedirectUrls()
-      .setCancelUrl("http://localhost:8082/paypal/cancel")
-      .setReturnUrl("http://localhost:8082/paypal/order/success");
+      .setCancelUrl("http://localhost:8082/" + Routes.CANCEL)
+      .setReturnUrl("http://localhost:8082/"+ Routes.ORDER);
 
     Details details = new Details()
       .setShipping("0.5")

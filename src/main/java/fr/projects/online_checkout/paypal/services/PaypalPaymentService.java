@@ -47,6 +47,6 @@ public interface PaypalPaymentService {
    */
   Mono<Capture> capturePayment(Authorization authorization) throws PayPalRESTException;
 
-
+  Mono<Capture> captureOrderPayment(String paymentId, String payerId) throws PayPalRESTException;
 
 }
