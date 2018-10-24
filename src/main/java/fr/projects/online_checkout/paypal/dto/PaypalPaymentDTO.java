@@ -1,16 +1,12 @@
 package fr.projects.online_checkout.paypal.dto;
 
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import java.util.List;
 
 
-@Getter
-@Setter
-@Builder
+@Data
 public class PaypalPaymentDTO extends PaypalModelDTO {
 
   private String id;

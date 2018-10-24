@@ -1,8 +1,6 @@
 package fr.projects.online_checkout.paypal.dto;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 /**
  * @Project online_checkout
@@ -10,13 +8,11 @@ import lombok.Setter;
  * @Date 23/10/2018
  * @Class purposes : .......
  */
-@Getter
-@Setter
-@Builder
+@Data
 public class PaypalRelatedResourcesDTO extends PaypalModelDTO {
- /* private Sale sale;
-  private Authorization authorization;
-  private Order order;
-  private Capture capture;
-  private Refund refund;*/
+  private PaypalSaleDTO sale;
+  private PaypalAuthorizationDTO authorization;
+  private PaypalOrderDTO order;
+  private PaypalCaptureDTO capture;
+  private PaypalRefundDTO refund;
 }

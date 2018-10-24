@@ -1,11 +1,10 @@
 package fr.projects.online_checkout.paypal.dto;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
-@Builder
+@Data
 public class PaypalAmountDTO extends PaypalModelDTO {
+  private String currency;
+  private String total;
+  private PaypalDetailsDTO details;
 }

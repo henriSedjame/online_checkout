@@ -1,8 +1,6 @@
 package fr.projects.online_checkout.paypal.dto;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 /**
  * @Project online_checkout
@@ -10,9 +8,7 @@ import lombok.Setter;
  * @Date 23/10/2018
  * @Class purposes : .......
  */
-@Getter
-@Setter
-@Builder
+@Data
 public class PaypalPayerInfoDTO extends PaypalModelDTO {
   private String email;
   private String buyerAccountNumber;

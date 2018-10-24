@@ -50,7 +50,7 @@ public class RouterHandlers {
     final String paymentId = request.queryParam(PaypalConstants.PAYMENT_ID).orElse(null);
     final String payertId = request.queryParam(PaypalConstants.PAYER_ID).orElse(null);
     try {
-      return paymentService.executePayment(paymentId, payertId).map(payment -> paymentMapper.paymentToDTO(payment).toString());
+      return paymentService.executePayment(paymentId, payertId).map(payment -> paymentMapper.toDTO(payment).toString());
     } catch (PayPalRESTException e) {
       return Mono.error(e);
     }
