@@ -2,10 +2,12 @@ package fr.projects.online_checkout.paypal.services.impl;
 
 import com.paypal.api.payments.Payment;
 import com.paypal.base.rest.PayPalRESTException;
-import fr.projects.online_checkout.paypal.Utils.PaypalPaymentUtils;
 import fr.projects.online_checkout.paypal.configuration.PayPalConfig;
+import fr.projects.online_checkout.paypal.constants.PaypalMode;
+import fr.projects.online_checkout.paypal.model.PaypalClient;
 import fr.projects.online_checkout.paypal.providers.PaypalPaymentsProviders;
 import fr.projects.online_checkout.paypal.services.PaypalPaymentService;
+import fr.projects.online_checkout.paypal.utils.PaypalPaymentUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.After;
 import org.junit.Before;
@@ -26,7 +28,8 @@ public class PaypalPaymentServiceImplTest {
   Payment payment;
   Payment authorizationPayment;
   Payment orderPayment;
-
+  PaypalClient client;
+  String mode;
   PaypalPaymentService service;
 
   @Autowired
@@ -34,11 +37,13 @@ public class PaypalPaymentServiceImplTest {
 
   @Before
   public void setUp() {
-    service = new PaypalPaymentServiceImpl(config);
+    service = new PaypalPaymentServiceImpl();
 
     payment = PaypalPaymentsProviders.createAPayment();
     authorizationPayment = PaypalPaymentsProviders.createAuthorizationPayment();
     orderPayment = PaypalPaymentsProviders.createOrderPayment();
+    client = config.getClient();
+    mode = PaypalMode.SANDBOX.name().toLowerCase();
   }
 
   @Test
@@ -48,7 +53,8 @@ public class PaypalPaymentServiceImplTest {
             () -> assertNotNull(service),
             () -> assertNotNull(payment),
             () -> assertNotNull(authorizationPayment),
-            () -> assertNotNull(orderPayment));
+      () -> assertNotNull(orderPayment),
+      () -> assertNotNull(client));
   }
 
 
@@ -62,7 +68,7 @@ public class PaypalPaymentServiceImplTest {
 
   @Test
   public void executePayment() throws PayPalRESTException {
-    service.approvePayment(payment).subscribe(response -> {
+    service.approvePayment(payment, client, mode).subscribe(response -> {
       assertNotNull(response);
       String approvalUrl = PaypalPaymentUtils.getApprovalUrl(response);
       assertNotNull(approvalUrl);
@@ -72,6 +78,7 @@ public class PaypalPaymentServiceImplTest {
 
   @Test
   public void authorizePayment() {
+
   }
 
   @Test

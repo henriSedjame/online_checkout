@@ -1,4 +1,4 @@
-package fr.projects.online_checkout.paypal.configuration;
+package fr.projects.online_checkout.paypal.constants;
 
 import lombok.Getter;
 

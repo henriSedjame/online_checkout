@@ -1,12 +1,13 @@
 package fr.projects.online_checkout.paypal.services.impl;
 
 import com.paypal.api.payments.*;
+import com.paypal.base.rest.APIContext;
 import com.paypal.base.rest.PayPalRESTException;
-import fr.projects.online_checkout.paypal.configuration.PayPalConfig;
-import fr.projects.online_checkout.paypal.configuration.PaypalConstants;
+import fr.projects.online_checkout.paypal.constants.PaypalConstants;
 import fr.projects.online_checkout.paypal.exceptions.PaypalExceptionBuilder;
 import fr.projects.online_checkout.paypal.exceptions.PaypalExceptionMessages;
 import fr.projects.online_checkout.paypal.exceptions.PaypalPaymentException;
+import fr.projects.online_checkout.paypal.model.PaypalClient;
 import fr.projects.online_checkout.paypal.services.PaypalPaymentService;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -25,28 +26,28 @@ public class PaypalPaymentServiceImpl implements PaypalPaymentService {
   //********************************************************************************************************************
   // ATTRIBUTS
   //********************************************************************************************************************
-  private PayPalConfig config;
 
   private PaypalExceptionBuilder<PaypalPaymentException> exceptionBuilder;
 
   //********************************************************************************************************************
   // CONSTRUCTEUR
   //********************************************************************************************************************
-  public PaypalPaymentServiceImpl(PayPalConfig config) {
+
+  public PaypalPaymentServiceImpl() {
     this.exceptionBuilder = new PaypalExceptionBuilder<>(PaypalPaymentException.class);
-    this.config = config;
   }
 
   //********************************************************************************************************************
   // METHODES
   //********************************************************************************************************************
+
   @Override
-  public Mono<Payment> approvePayment(Payment payment) throws PayPalRESTException {
+  public Mono<Payment> approvePayment(Payment payment, PaypalClient client, String mode) throws PayPalRESTException {
     this.exceptionBuilder.clear();
 
     final Mono<Payment> createdPayment = Mono.fromSupplier(() -> {
       try {
-        return payment.create(config.getContext());
+        return payment.create(this.getPaypalContext(client.getClientId(), client.getSecret(), mode));
       } catch (Exception e) {
         exceptionBuilder.addException(new PaypalPaymentException(PaypalExceptionMessages.APPROBATION_PAYMENT_IMPOSSIBLE));
       }
@@ -59,7 +60,7 @@ public class PaypalPaymentServiceImpl implements PaypalPaymentService {
   }
 
   @Override
-  public Mono<Payment> executePayment(String paymentId, String payerId) throws PayPalRESTException {
+  public Mono<Payment> executePayment(String paymentId, String payerId, PaypalClient client, String mode) throws PayPalRESTException {
     this.exceptionBuilder.clear();
 
     if (Objects.isNull(paymentId)) this.exceptionBuilder.addException(new PaypalPaymentException(PaypalExceptionMessages.PAYMENT_ID_NULL));
@@ -72,7 +73,7 @@ public class PaypalPaymentServiceImpl implements PaypalPaymentService {
 
       final Mono<Payment> executedPayment = Mono.fromSupplier(() -> {
         try {
-          return payment.execute(this.config.getContext(), execution);
+          return payment.execute(this.getPaypalContext(client.getClientId(), client.getSecret(), mode), execution);
         } catch (Exception e) {
           this.exceptionBuilder.addException(new PaypalPaymentException(PaypalExceptionMessages.EXECUTION_PAYMENT_IMPOSSIBLE));
         }
@@ -87,115 +88,131 @@ public class PaypalPaymentServiceImpl implements PaypalPaymentService {
   }
 
   @Override
-  public Mono<Authorization> authorizePayment(String paymentId, String payerId) throws PayPalRESTException {
+  public Mono<Capture> captureOrderPayment(String paymentId, String payerId, double amountToRefund, String currency, PaypalClient client, String mode) throws PayPalRESTException {
 
-    this.exceptionBuilder.clear();
+    Mono<Capture> orderCaptured = this.executePayment(paymentId, payerId, client, mode)
+      .map(payment -> {
+        if (Objects.equals(payment.getState(), PaypalConstants.APPROVED)) {
 
-    if (Objects.isNull(paymentId)) this.exceptionBuilder.addException(new PaypalPaymentException(PaypalExceptionMessages.PAYMENT_ID_NULL));
-    if (Objects.isNull(payerId)) this.exceptionBuilder.addException(new PaypalPaymentException(PaypalExceptionMessages.PAYER_ID_NULL));
+          String orderId = getPaymentRelatedResources(payment).getOrder().getId();
 
-    if (!this.exceptionBuilder.throwException()) {
+          if (Objects.isNull(orderId))
+            this.exceptionBuilder.addException(new PaypalPaymentException(PaypalExceptionMessages.PAYMENT_ORDER_ID_NULL));
 
-      final Mono<Authorization> authorization = this.executePayment(paymentId, payerId)
-        .map(payment ->{
-          RelatedResources relatedResource = getPaymentRelatedResources(payment);
-          if (!this.exceptionBuilder.hasException()) return relatedResource.getAuthorization();
+          Capture responseCapture = null;
+
+          if (!this.exceptionBuilder.hasException()) {
+            Amount amount = new Amount()
+              .setTotal(String.valueOf(amountToRefund))
+              .setCurrency(currency);
+
+            Order order = null;
+            try {
+              order = Order.get(this.getPaypalContext(client.getClientId(), client.getSecret(), mode), orderId)
+                .setAmount(amount);
+            } catch (PayPalRESTException e) {
+              this.exceptionBuilder.addException(new PaypalPaymentException(PaypalExceptionMessages.PAYMENT_ORDER_CREATION_IMPOSSIBLE));
+            }
+
+            if (!this.exceptionBuilder.hasException()) {
+              Authorization authorization = null;
+              try {
+                authorization = order.authorize(this.getPaypalContext(client.getClientId(), client.getSecret(), mode));
+              } catch (PayPalRESTException e) {
+                this.exceptionBuilder.addException(new PaypalPaymentException(PaypalExceptionMessages.PAYMENT_ORDER_AUTHORIZATION_IMPOSSIBLE));
+              }
+
+              if (!this.exceptionBuilder.hasException()) {
+                Capture capture = new Capture()
+                  .setAmount(amount)
+                  .setIsFinalCapture(true);
+                try {
+                  responseCapture = authorization.capture(this.getPaypalContext(client.getClientId(), client.getSecret(), mode), capture);
+                } catch (PayPalRESTException e) {
+                  this.exceptionBuilder.addException(new PaypalPaymentException(PaypalExceptionMessages.PAYMENT_ORDER_CAPTURE_IMPOSSIBLE));
+                }
+              }
+            }
+          }
+          return responseCapture;
+        } else {
+          this.exceptionBuilder.addException(new PaypalPaymentException(PaypalExceptionMessages.PAYMENT_NOT_APPROVED));
           return null;
-        });
+        }
+      });
 
-      this.exceptionBuilder.throwException();
-
-      return authorization;
-    }
+    if(!this.exceptionBuilder.throwException()) return orderCaptured;
 
     return Mono.empty();
   }
 
   @Override
-  public Mono<Capture> capturePayment(Authorization authorization) throws PayPalRESTException {
+  public Mono<Refund> refundPayment(String saleId, double amountToRefund, String currency, PaypalClient client, String mode) throws PayPalRESTException {
+    this.exceptionBuilder.clear();
+
+    Amount amount = new Amount()
+      .setTotal(String.valueOf(amountToRefund))
+      .setCurrency(currency);
+
+    RefundRequest refundRequest = new RefundRequest()
+      .setAmount(amount);
+
+    Sale sale = new Sale()
+      .setId(saleId);
+
+    final Mono<Refund> refund = Mono.fromSupplier(() -> {
+      try {
+        return sale.refund(this.getPaypalContext(client.getClientId(), client.getSecret(), mode), refundRequest);
+      } catch (PayPalRESTException e) {
+        exceptionBuilder.addException(new PaypalPaymentException(PaypalExceptionMessages.APPROBATION_PAYMENT_IMPOSSIBLE));
+      }
+      return null;
+    });
+
+    if (!this.exceptionBuilder.throwException()) return refund;
+
+    return Mono.empty();
+  }
+
+  @Override
+  public Mono<Capture> captureAuthorizationPayment(String paymentId, String payerId, double amountToRefund, String currency, PaypalClient client, String mode) throws PayPalRESTException {
 
     this.exceptionBuilder.clear();
 
-    final Amount amount = authorization.getAmount();
-    if (Objects.isNull(amount)) this.exceptionBuilder.addException(new PaypalPaymentException(PaypalExceptionMessages.PAYMENT_AMOUNT_NULL));
+    final Mono<Capture> capturedAuthorization = this.executePayment(paymentId, payerId, client, mode)
+      .map(payment -> {
 
-    if (! this.exceptionBuilder.throwException()){
-      Capture capture = new Capture()
-        .setAmount(amount)
-        .setIsFinalCapture(true);
+        RelatedResources relatedResource = getPaymentRelatedResources(payment);
 
-      final Mono<Capture> responseCapture = Mono.fromSupplier( () -> {
-        try {
-          return authorization.capture(this.config.getContext(), capture);
-        } catch (PayPalRESTException e) {
-          this.exceptionBuilder.addException(new PaypalPaymentException(PaypalExceptionMessages.PAYMENT_AUTHORIZATION_CAPTURE_IMPOSSIBLE));
+        if (!this.exceptionBuilder.hasException()) {
+
+          final Authorization authorization = relatedResource.getAuthorization();
+
+          if (Objects.isNull(authorization))
+            this.exceptionBuilder.addException(new PaypalPaymentException(PaypalExceptionMessages.PAYMENT_AUTHORIZATION_CAPTURE_NULL));
+
+          if (!this.exceptionBuilder.hasException()) {
+
+            final Amount amount = new Amount()
+              .setTotal(String.valueOf(amountToRefund))
+              .setCurrency(currency);
+            Capture capture = new Capture()
+              .setAmount(amount)
+              .setIsFinalCapture(true);
+
+            Capture responseCapture = null;
+            try {
+              responseCapture = authorization.capture(this.getPaypalContext(client.getClientId(), client.getSecret(), mode), capture);
+            } catch (PayPalRESTException e) {
+              this.exceptionBuilder.addException(new PaypalPaymentException(PaypalExceptionMessages.PAYMENT_AUTHORIZATION_CAPTURE_IMPOSSIBLE));
+            }
+            return responseCapture;
+          }
         }
         return null;
       });
 
-      this.exceptionBuilder.throwException();
-
-      return responseCapture;
-    }
-    return Mono.empty();
-  }
-
-  @Override
-  public Mono<Capture> captureOrderPayment(String paymentId, String payerId) throws PayPalRESTException {
-
-    Mono<Capture> orderCaptured = this.executePayment(paymentId, payerId)
-            .map(payment -> {
-              if (Objects.equals(payment.getState(), PaypalConstants.APPROVED)) {
-
-                String orderId = getPaymentRelatedResources(payment).getOrder().getId();
-
-                if(Objects.isNull(orderId))
-                  this.exceptionBuilder.addException(new PaypalPaymentException(PaypalExceptionMessages.PAYMENT_ORDER_ID_NULL));
-
-                Capture responseCapture = null;
-
-                if (!this.exceptionBuilder.hasException()) {
-                  Amount amount = payment.getTransactions().get(0).getAmount();
-
-                  if (Objects.isNull(amount))
-                    this.exceptionBuilder.addException(new PaypalPaymentException(PaypalExceptionMessages.PAYMENT_AMOUNT_NULL));
-
-                  Order order = null;
-                  try {
-                    order = Order.get(this.config.getContext(), orderId)
-                            .setAmount(amount);
-                  } catch (PayPalRESTException e) {
-                    this.exceptionBuilder.addException(new PaypalPaymentException(PaypalExceptionMessages.PAYMENT_ORDER_CREATION_IMPOSSIBLE));
-                  }
-
-                  if (!this.exceptionBuilder.hasException()) {
-                    Authorization authorization = null;
-                    try {
-                      authorization = order.authorize(this.config.getContext());
-                    } catch (PayPalRESTException e) {
-                      this.exceptionBuilder.addException(new PaypalPaymentException(PaypalExceptionMessages.PAYMENT_ORDER_AUTHORIZATION_IMPOSSIBLE));
-                    }
-
-                    if (!this.exceptionBuilder.hasException()) {
-                      Capture capture = new Capture()
-                              .setAmount(amount)
-                              .setIsFinalCapture(true);
-                      try {
-                        responseCapture = authorization.capture(this.config.getContext(), capture);
-                      } catch (PayPalRESTException e) {
-                        this.exceptionBuilder.addException(new PaypalPaymentException(PaypalExceptionMessages.PAYMENT_ORDER_CAPTURE_IMPOSSIBLE));
-                      }
-                    }
-                  }
-                }
-                return responseCapture;
-              } else {
-                this.exceptionBuilder.addException(new PaypalPaymentException(PaypalExceptionMessages.PAYMENT_NOT_APPROVED));
-                return null;
-              }
-            });
-
-    if(!this.exceptionBuilder.throwException()) return orderCaptured;
+    if (!this.exceptionBuilder.throwException()) return capturedAuthorization;
 
     return Mono.empty();
   }
@@ -227,6 +244,10 @@ public class PaypalPaymentServiceImpl implements PaypalPaymentService {
       }
     }
     return relatedResource;
+  }
+
+  private APIContext getPaypalContext(String clientId, String secret, String mode) {
+    return new APIContext(clientId, secret, mode);
   }
 
 }

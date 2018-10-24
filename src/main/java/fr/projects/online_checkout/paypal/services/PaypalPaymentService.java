@@ -1,14 +1,12 @@
 package fr.projects.online_checkout.paypal.services;
 
-import com.paypal.api.payments.Authorization;
 import com.paypal.api.payments.Capture;
-import com.paypal.api.payments.Order;
 import com.paypal.api.payments.Payment;
+import com.paypal.api.payments.Refund;
 import com.paypal.base.rest.PayPalRESTException;
+import fr.projects.online_checkout.paypal.model.PaypalClient;
 import reactor.core.publisher.Mono;
 
-import javax.swing.text.html.Option;
-import java.util.Optional;
 
 public interface PaypalPaymentService {
 
@@ -18,8 +16,7 @@ public interface PaypalPaymentService {
    * @return
    * @throws PayPalRESTException
    */
-  Mono<Payment> approvePayment(Payment payment) throws PayPalRESTException;
-
+  Mono<Payment> approvePayment(Payment payment, PaypalClient client, String mode) throws PayPalRESTException;
 
   /**
    * Méthode permettant d'éxécuter un paiement approuvé
@@ -28,25 +25,34 @@ public interface PaypalPaymentService {
    * @return
    * @throws PayPalRESTException
    */
-  Mono<Payment> executePayment(String paymentId, String payerId) throws PayPalRESTException;
+  Mono<Payment> executePayment(String paymentId, String payerId, PaypalClient client, String mode) throws PayPalRESTException;
 
   /**
-   * Méthode permettant d'authoriser un paiement approuvé en différé par un clien paypal
+   * Méthode permettant de d'executer le paiement d'une commande paypal
    * @param paymentId
    * @param payerId
    * @return
    * @throws PayPalRESTException
    */
-  Mono<Authorization> authorizePayment(String paymentId, String payerId) throws PayPalRESTException;
+  Mono<Capture> captureOrderPayment(String paymentId, String payerId, double amountToRefund, String currency, PaypalClient client, String mode) throws PayPalRESTException;
 
   /**
-   * Méthode permettant d'éxécuter une authorisation de paiment paypal
-   * @param authorization
+   * Methode permettant le remboursement d'un paiement paypal
+   *
+   * @param saleId
+   * @param amountToRefund
+   * @param currency
    * @return
    * @throws PayPalRESTException
    */
-  Mono<Capture> capturePayment(Authorization authorization) throws PayPalRESTException;
+  Mono<Refund> refundPayment(String saleId, double amountToRefund, String currency, PaypalClient client, String mode) throws PayPalRESTException;
 
-  Mono<Capture> captureOrderPayment(String paymentId, String payerId) throws PayPalRESTException;
-
+  /**
+   * Méthode permettant d'éxécuter une authorisation de paiement paypal
+   * @param paymentId
+   * @param payerId
+   * @return
+   * @throws PayPalRESTException
+   */
+  Mono<Capture> captureAuthorizationPayment(String paymentId, String payerId, double amountToRefund, String currency, PaypalClient client, String mode) throws PayPalRESTException;
 }

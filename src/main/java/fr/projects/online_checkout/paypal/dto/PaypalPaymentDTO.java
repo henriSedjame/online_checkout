@@ -8,7 +8,6 @@ import java.util.List;
 
 @Data
 public class PaypalPaymentDTO extends PaypalModelDTO {
-
   private String id;
   private String intent;
   private String cart;

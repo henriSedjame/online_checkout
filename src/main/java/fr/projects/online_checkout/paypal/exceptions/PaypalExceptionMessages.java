@@ -17,7 +17,6 @@ public class PaypalExceptionMessages {
   public static final String PAYMENT_TRANSACTION_NULL = "";
   public static final String PAYMENT_TRANSACTION_RELATED_SOURCES_EMPTY = "";
   public static final String PAYMENT_TRANSACTION_RELATED_SOURCE_NULL = "";
-  public static final String PAYMENT_AMOUNT_NULL = "";
   public static final String PAYMENT_AUTHORIZATION_CAPTURE_IMPOSSIBLE = "";
   public static final String PAYMENT_ORDER_ID_NULL = "";
   public static final String PAYMENT_ORDER_CREATION_IMPOSSIBLE = "";

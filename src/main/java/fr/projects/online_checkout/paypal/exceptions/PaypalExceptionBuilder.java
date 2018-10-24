@@ -2,12 +2,12 @@ package fr.projects.online_checkout.paypal.exceptions;
 
 import com.paypal.base.rest.PayPalRESTException;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * @Project online_checkout
@@ -16,6 +16,7 @@ import java.util.Objects;
  * @Class purposes : .......
  */
 
+@Slf4j
 public class PaypalExceptionBuilder<T extends PayPalRESTException>{
 
   @Getter
@@ -58,7 +59,7 @@ public class PaypalExceptionBuilder<T extends PayPalRESTException>{
       Constructor<T> constructor = exceptionClass.getConstructor(String.class);
       exception = constructor.newInstance(exceptionMessageBuilder.toString());
     } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-      e.printStackTrace();
+      log.error(e.getMessage());
     }
 
     this.clear();

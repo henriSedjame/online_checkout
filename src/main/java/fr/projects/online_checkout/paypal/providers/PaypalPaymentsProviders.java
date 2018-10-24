@@ -1,9 +1,10 @@
 package fr.projects.online_checkout.paypal.providers;
 
 import com.paypal.api.payments.*;
-import fr.projects.online_checkout.paypal.configuration.PaypalIntents;
-import fr.projects.online_checkout.paypal.configuration.PaypalPaymentMethods;
+import fr.projects.online_checkout.paypal.constants.PaypalIntents;
+import fr.projects.online_checkout.paypal.constants.PaypalPaymentMethods;
 import fr.projects.online_checkout.paypal.controller.Routes;
+import fr.projects.online_checkout.paypal.exceptions.UnstantiableClassException;
 import org.springframework.context.annotation.Profile;
 
 import java.util.ArrayList;
@@ -18,7 +19,9 @@ import java.util.List;
 @Profile("dev")
 public class PaypalPaymentsProviders {
 
-
+  private PaypalPaymentsProviders() throws UnstantiableClassException {
+    throw new UnstantiableClassException("Cette classe n'est pas instantibale");
+  }
 
   /**
    * Methode de création d'un paiement par paypal

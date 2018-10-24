@@ -1,8 +1,9 @@
-package fr.projects.online_checkout.paypal.Utils;
+package fr.projects.online_checkout.paypal.utils;
 
 import com.paypal.api.payments.Links;
 import com.paypal.api.payments.Payment;
-import fr.projects.online_checkout.paypal.configuration.PaypalConstants;
+import fr.projects.online_checkout.paypal.constants.PaypalConstants;
+import fr.projects.online_checkout.paypal.exceptions.UnstantiableClassException;
 
 /**
  * @Project online_checkout
@@ -11,6 +12,10 @@ import fr.projects.online_checkout.paypal.configuration.PaypalConstants;
  * @Class purposes : .......
  */
 public class PaypalPaymentUtils {
+
+  private PaypalPaymentUtils() throws UnstantiableClassException {
+    throw new UnstantiableClassException("Cette classe n'est pas instantibale");
+  }
 
   /**
    * Méthode permettant de récupérer l'url d'approbation d'un paiement paypal

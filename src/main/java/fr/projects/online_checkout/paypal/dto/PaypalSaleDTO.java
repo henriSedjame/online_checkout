@@ -6,7 +6,6 @@ import java.util.List;
 
 @Data
 public class PaypalSaleDTO extends PaypalModelDTO {
-
   private String id;
   private String paymentMode;
   private String state;
@@ -21,5 +20,4 @@ public class PaypalSaleDTO extends PaypalModelDTO {
   private String parentPayment;
   private String createTime;
   private String updateTime;
-
 }

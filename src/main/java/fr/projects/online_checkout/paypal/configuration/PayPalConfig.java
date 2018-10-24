@@ -1,10 +1,10 @@
 package fr.projects.online_checkout.paypal.configuration;
 
 import com.paypal.base.rest.APIContext;
+import fr.projects.online_checkout.paypal.constants.PaypalMode;
+import fr.projects.online_checkout.paypal.model.PaypalClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 import java.util.Objects;
@@ -24,5 +24,12 @@ public class PayPalConfig {
     if (Objects.isNull(context) || Objects.isNull(context.getClientID())|| Objects.isNull(context.getClientSecret()))
       context = new APIContext(clientId, secret, PaypalMode.SANDBOX.name().toLowerCase());
     return this.context;
+  }
+
+  public PaypalClient getClient() {
+    return PaypalClient.builder()
+      .clientId(clientId)
+      .secret(secret)
+      .build();
   }
 }
