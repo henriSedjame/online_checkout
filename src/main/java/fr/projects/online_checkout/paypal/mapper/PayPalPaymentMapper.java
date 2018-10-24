@@ -6,7 +6,13 @@ import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {
+        PaypalPayerMapper.class,
+        PaypalPayeeMapper.class,
+        PaypalTransactionMapper.class,
+        PaypalRedirectUrlsMapper.class,
+        PaypalLinksMapper.class
+})
 public interface PayPalPaymentMapper {
   PayPalPaymentMapper INSTANCE = Mappers.getMapper(PayPalPaymentMapper.class);
 

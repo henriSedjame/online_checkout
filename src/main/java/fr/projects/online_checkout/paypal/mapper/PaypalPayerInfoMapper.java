@@ -11,7 +11,9 @@ import org.mapstruct.factory.Mappers;
  * @Date 23/10/2018
  * @Class purposes : .......
  */
-@Mapper
+@Mapper(componentModel = "spring", uses = {
+        PaypalAddressMapper.class
+})
 public interface PaypalPayerInfoMapper {
   PaypalPayerInfoMapper INSTANCE = Mappers.getMapper(PaypalPayerInfoMapper.class);
 
