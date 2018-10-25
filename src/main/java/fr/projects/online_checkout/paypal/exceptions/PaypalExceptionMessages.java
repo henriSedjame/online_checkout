@@ -23,4 +23,5 @@ public class PaypalExceptionMessages {
   public static final String PAYMENT_ORDER_AUTHORIZATION_IMPOSSIBLE = "";
   public static final String PAYMENT_ORDER_CAPTURE_IMPOSSIBLE = "";
   public static final String PAYMENT_NOT_APPROVED = "";
+  public static final String PAYMENT_AUTHORIZATION_CAPTURE_NULL = "";
 }
