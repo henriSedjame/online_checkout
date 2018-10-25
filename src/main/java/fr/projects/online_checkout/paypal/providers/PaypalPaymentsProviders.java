@@ -77,7 +77,6 @@ public class PaypalPaymentsProviders {
     payment.setPayer(payer);
     payment.setTransactions(transactions);
     payment.setRedirectUrls(redirectUrls);
-
     return payment;
 
   }

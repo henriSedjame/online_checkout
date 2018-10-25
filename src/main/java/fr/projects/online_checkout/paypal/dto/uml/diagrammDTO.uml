@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="426.1307638888888" y="350.0">fr.projects.online_checkout.paypal.dto.PaypalRefundDTO</node>
+    <node x="790.1307638888889" y="350.0">fr.projects.online_checkout.paypal.dto.PaypalCaptureDTO</node>
+    <node x="269.1307638888888" y="350.0">fr.projects.online_checkout.paypal.dto.PaypalOrderDTO</node>
+    <node x="38.5" y="230.0">fr.projects.online_checkout.paypal.dto.PaypalPayerInfoDTO</node>
+    <node x="1117.5682638888889" y="150.0">fr.projects.online_checkout.paypal.dto.PaypalPhoneDTO</node>
+    <node x="482.94506944444475" y="440.0">fr.projects.online_checkout.paypal.dto.PaypalRelatedResourcesDTO</node>
+    <node x="887.7557638888889" y="230.0">fr.projects.online_checkout.paypal.dto.PaypalCurrencyDTO</node>
+    <node x="624.3200694444447" y="150.0">fr.projects.online_checkout.paypal.dto.PaypalDetailsDTO</node>
+    <node x="591.1307638888889" y="350.0">fr.projects.online_checkout.paypal.dto.PaypalAuthorizationDTO</node>
+    <node x="1318.5682638888889" y="150.0">fr.projects.online_checkout.paypal.dto.PaypalRedirectUrlsDTO</node>
+    <node x="93.5" y="350.0">fr.projects.online_checkout.paypal.dto.PaypalPayerDTO</node>
+    <node x="0.0" y="150.0">fr.projects.online_checkout.paypal.dto.PaypalAddressDTO</node>
+    <node x="1159.5682638888889" y="230.0">fr.projects.online_checkout.paypal.dto.PaypalPayeeDTO</node>
+    <node x="809.1742361111114" y="610.0">fr.projects.online_checkout.paypal.dto.PaypalPaymentDTO</node>
+    <node x="652.8125" y="0.0">fr.projects.online_checkout.paypal.dto.PaypalModelDTO</node>
+    <node x="579.0700694444447" y="230.0">fr.projects.online_checkout.paypal.dto.PaypalAmountDTO</node>
+    <node x="968.5682638888889" y="350.0">fr.projects.online_checkout.paypal.dto.PaypalSaleDTO</node>
+    <node x="316.38493055555546" y="230.0">fr.projects.online_checkout.paypal.dto.PaypalLinksDTO</node>
+    <node x="716.7992361111114" y="520.0">fr.projects.online_checkout.paypal.dto.PaypalTransactionDTO</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="fr.projects.online_checkout.paypal.dto.PaypalRelatedResourcesDTO" target="fr.projects.online_checkout.paypal.dto.PaypalRefundDTO">
+      <point x="-16.58333333333337" y="-15.0" />
+      <point x="565.8617361111114" y="400.0" />
+      <point x="498.6307638888888" y="400.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="fr.projects.online_checkout.paypal.dto.PaypalRelatedResourcesDTO" target="fr.projects.online_checkout.paypal.dto.PaypalAuthorizationDTO">
+      <point x="16.58333333333337" y="-15.0" />
+      <point x="599.0284027777782" y="400.0" />
+      <point x="680.6307638888889" y="400.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="fr.projects.online_checkout.paypal.dto.PaypalAmountDTO" target="fr.projects.online_checkout.paypal.dto.PaypalDetailsDTO">
+      <point x="37.75" y="-15.0" />
+      <point x="692.3200694444447" y="205.0" />
+      <point x="695.3200694444447" y="205.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="fr.projects.online_checkout.paypal.dto.PaypalRefundDTO" target="fr.projects.online_checkout.paypal.dto.PaypalModelDTO">
+      <point x="-5.6843418860808015E-14" y="-15.0" />
+      <point x="498.63076388888874" y="310.0" />
+      <point x="491.4450694444447" y="310.0" />
+      <point x="491.4450694444447" y="110.0" />
+      <point x="703.7291666666667" y="110.0" />
+      <point x="-19.58333333333337" y="15.0" />
+    </edge>
+    <edge source="fr.projects.online_checkout.paypal.dto.PaypalRelatedResourcesDTO" target="fr.projects.online_checkout.paypal.dto.PaypalCaptureDTO">
+      <point x="49.75" y="-15.0" />
+      <point x="632.1950694444447" y="410.0" />
+      <point x="864.6307638888889" y="410.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="fr.projects.online_checkout.paypal.dto.PaypalPaymentDTO" target="fr.projects.online_checkout.paypal.dto.PaypalRedirectUrlsDTO">
+      <point x="64.16666666666663" y="-15.0" />
+      <point x="950.3409027777781" y="590.0" />
+      <point x="1403.5682638888889" y="590.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="fr.projects.online_checkout.paypal.dto.PaypalPaymentDTO" target="fr.projects.online_checkout.paypal.dto.PaypalPayeeDTO">
+      <point x="12.833333333333371" y="-15.0" />
+      <point x="899.0075694444448" y="570.0" />
+      <point x="1228.5682638888889" y="570.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="fr.projects.online_checkout.paypal.dto.PaypalPayeeDTO" target="fr.projects.online_checkout.paypal.dto.PaypalModelDTO">
+      <point x="34.5" y="-15.0" />
+      <point x="1263.0682638888889" y="205.0" />
+      <point x="1269.0682638888889" y="205.0" />
+      <point x="1269.0682638888889" y="70.0" />
+      <point x="774.2291666666667" y="70.0" />
+      <point x="50.91666666666663" y="15.0" />
+    </edge>
+    <edge source="fr.projects.online_checkout.paypal.dto.PaypalPayerInfoDTO" target="fr.projects.online_checkout.paypal.dto.PaypalModelDTO">
+      <point x="39.25" y="-15.0" />
+      <point x="156.25" y="205.0" />
+      <point x="159.5" y="205.0" />
+      <point x="159.5" y="60.0" />
+      <point x="664.5625" y="60.0" />
+      <point x="-58.75" y="15.0" />
+    </edge>
+    <edge source="fr.projects.online_checkout.paypal.dto.PaypalRelatedResourcesDTO" target="fr.projects.online_checkout.paypal.dto.PaypalSaleDTO">
+      <point x="82.91666666666663" y="-15.0" />
+      <point x="665.3617361111114" y="420.0" />
+      <point x="1032.5682638888889" y="420.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="fr.projects.online_checkout.paypal.dto.PaypalPayeeDTO" target="fr.projects.online_checkout.paypal.dto.PaypalPhoneDTO">
+      <point x="-34.5" y="-15.0" />
+      <point x="1194.0682638888889" y="205.0" />
+      <point x="1188.0682638888889" y="205.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="fr.projects.online_checkout.paypal.dto.PaypalCaptureDTO" target="fr.projects.online_checkout.paypal.dto.PaypalLinksDTO">
+      <point x="-55.875" y="-15.0" />
+      <point x="808.7557638888889" y="290.0" />
+      <point x="436.9849305555554" y="290.0" />
+      <point x="53.599999999999966" y="15.0" />
+    </edge>
+    <edge source="fr.projects.online_checkout.paypal.dto.PaypalRefundDTO" target="fr.projects.online_checkout.paypal.dto.PaypalAmountDTO">
+      <point x="48.333333333333314" y="-15.0" />
+      <point x="546.9640972222221" y="330.0" />
+      <point x="635.6950694444447" y="330.0" />
+      <point x="-18.875" y="15.0" />
+    </edge>
+    <edge source="fr.projects.online_checkout.paypal.dto.PaypalPaymentDTO" target="fr.projects.online_checkout.paypal.dto.PaypalLinksDTO">
+      <point x="-38.5" y="-15.0" />
+      <point x="847.6742361111114" y="580.0" />
+      <point x="240.0" y="580.0" />
+      <point x="240.0" y="330.0" />
+      <point x="329.78493055555543" y="330.0" />
+      <point x="-53.60000000000002" y="15.0" />
+    </edge>
+    <edge source="fr.projects.online_checkout.paypal.dto.PaypalRefundDTO" target="fr.projects.online_checkout.paypal.dto.PaypalLinksDTO">
+      <point x="-48.33333333333343" y="-15.0" />
+      <point x="450.29743055555537" y="310.0" />
+      <point x="383.38493055555546" y="310.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="fr.projects.online_checkout.paypal.dto.PaypalAuthorizationDTO" target="fr.projects.online_checkout.paypal.dto.PaypalLinksDTO">
+      <point x="-59.66666666666663" y="-15.0" />
+      <point x="620.9640972222221" y="300.0" />
+      <point x="410.18493055555547" y="300.0" />
+      <point x="26.80000000000001" y="15.0" />
+    </edge>
+    <edge source="fr.projects.online_checkout.paypal.dto.PaypalCaptureDTO" target="fr.projects.online_checkout.paypal.dto.PaypalAmountDTO">
+      <point x="-18.625" y="-15.0" />
+      <point x="846.0057638888889" y="280.0" />
+      <point x="711.1950694444447" y="280.0" />
+      <point x="56.625" y="15.0" />
+    </edge>
+    <edge source="fr.projects.online_checkout.paypal.dto.PaypalRedirectUrlsDTO" target="fr.projects.online_checkout.paypal.dto.PaypalModelDTO">
+      <point x="0.0" y="-15.0" />
+      <point x="1403.5682638888889" y="50.0" />
+      <point x="789.8958333333333" y="50.0" />
+      <point x="66.58333333333326" y="15.0" />
+    </edge>
+    <edge source="fr.projects.online_checkout.paypal.dto.PaypalPhoneDTO" target="fr.projects.online_checkout.paypal.dto.PaypalModelDTO">
+      <point x="0.0" y="-15.0" />
+      <point x="1188.0682638888889" y="80.0" />
+      <point x="766.3958333333333" y="80.0" />
+      <point x="43.08333333333326" y="15.0" />
+    </edge>
+    <edge source="fr.projects.online_checkout.paypal.dto.PaypalCaptureDTO" target="fr.projects.online_checkout.paypal.dto.PaypalModelDTO">
+      <point x="18.625" y="-15.0" />
+      <point x="883.2557638888889" y="330.0" />
+      <point x="877.2557638888889" y="330.0" />
+      <point x="877.2557638888889" y="120.0" />
+      <point x="735.0625" y="120.0" />
+      <point x="11.75" y="15.0" />
+    </edge>
+    <edge source="fr.projects.online_checkout.paypal.dto.PaypalRelatedResourcesDTO" target="fr.projects.online_checkout.paypal.dto.PaypalOrderDTO">
+      <point x="-49.75" y="-15.0" />
+      <point x="532.6950694444447" y="410.0" />
+      <point x="337.6307638888888" y="410.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="fr.projects.online_checkout.paypal.dto.PaypalAddressDTO" target="fr.projects.online_checkout.paypal.dto.PaypalModelDTO">
+      <point x="0.0" y="-15.0" />
+      <point x="74.5" y="50.0" />
+      <point x="656.7291666666667" y="50.0" />
+      <point x="-66.58333333333337" y="15.0" />
+    </edge>
+    <edge source="fr.projects.online_checkout.paypal.dto.PaypalTransactionDTO" target="fr.projects.online_checkout.paypal.dto.PaypalModelDTO">
+      <point x="42.25" y="-15.0" />
+      <point x="843.5492361111114" y="495.0" />
+      <point x="1107.0682638888889" y="495.0" />
+      <point x="1107.0682638888889" y="90.0" />
+      <point x="758.5625" y="90.0" />
+      <point x="35.25" y="15.0" />
+    </edge>
+    <edge source="fr.projects.online_checkout.paypal.dto.PaypalAuthorizationDTO" target="fr.projects.online_checkout.paypal.dto.PaypalModelDTO">
+      <point x="59.66666666666663" y="-15.0" />
+      <point x="740.2974305555554" y="330.0" />
+      <point x="800.3828472222223" y="330.0" />
+      <point x="800.3828472222223" y="130.0" />
+      <point x="727.2291666666667" y="130.0" />
+      <point x="3.9166666666666288" y="15.0" />
+    </edge>
+    <edge source="fr.projects.online_checkout.paypal.dto.PaypalPayerDTO" target="fr.projects.online_checkout.paypal.dto.PaypalModelDTO">
+      <point x="34.0" y="-15.0" />
+      <point x="195.5" y="330.0" />
+      <point x="206.0" y="330.0" />
+      <point x="206.0" y="70.0" />
+      <point x="672.3958333333335" y="70.0" />
+      <point x="-50.91666666666663" y="15.0" />
+    </edge>
+    <edge source="fr.projects.online_checkout.paypal.dto.PaypalSaleDTO" target="fr.projects.online_checkout.paypal.dto.PaypalModelDTO">
+      <point x="32.0" y="-15.0" />
+      <point x="1064.5682638888889" y="330.0" />
+      <point x="1057.1932638888889" y="330.0" />
+      <point x="1057.1932638888889" y="100.0" />
+      <point x="750.7291666666667" y="100.0" />
+      <point x="27.41666666666663" y="15.0" />
+    </edge>
+    <edge source="fr.projects.online_checkout.paypal.dto.PaypalCurrencyDTO" target="fr.projects.online_checkout.paypal.dto.PaypalModelDTO">
+      <point x="0.0" y="-15.0" />
+      <point x="965.2557638888889" y="110.0" />
+      <point x="742.8958333333333" y="110.0" />
+      <point x="19.583333333333258" y="15.0" />
+    </edge>
+    <edge source="fr.projects.online_checkout.paypal.dto.PaypalPaymentDTO" target="fr.projects.online_checkout.paypal.dto.PaypalPayerDTO">
+      <point x="-64.16666666666663" y="-15.0" />
+      <point x="822.0075694444448" y="590.0" />
+      <point x="161.5" y="590.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="fr.projects.online_checkout.paypal.dto.PaypalPaymentDTO" target="fr.projects.online_checkout.paypal.dto.PaypalModelDTO">
+      <point x="38.5" y="-15.0" />
+      <point x="924.6742361111114" y="580.0" />
+      <point x="1308.0682638888889" y="580.0" />
+      <point x="1308.0682638888889" y="60.0" />
+      <point x="782.0625" y="60.0" />
+      <point x="58.75" y="15.0" />
+    </edge>
+    <edge source="fr.projects.online_checkout.paypal.dto.PaypalOrderDTO" target="fr.projects.online_checkout.paypal.dto.PaypalLinksDTO">
+      <point x="0.0" y="-15.0" />
+      <point x="337.6307638888888" y="330.0" />
+      <point x="356.58493055555545" y="330.0" />
+      <point x="-26.80000000000001" y="15.0" />
+    </edge>
+    <edge source="fr.projects.online_checkout.paypal.dto.PaypalOrderDTO" target="fr.projects.online_checkout.paypal.dto.PaypalModelDTO">
+      <point x="-45.666666666666686" y="-15.0" />
+      <point x="291.9640972222221" y="320.0" />
+      <point x="279.21409722222216" y="320.0" />
+      <point x="279.21409722222216" y="90.0" />
+      <point x="688.0625" y="90.0" />
+      <point x="-35.25" y="15.0" />
+    </edge>
+    <edge source="fr.projects.online_checkout.paypal.dto.PaypalPayerDTO" target="fr.projects.online_checkout.paypal.dto.PaypalPayerInfoDTO">
+      <point x="-34.0" y="-15.0" />
+      <point x="127.5" y="330.0" />
+      <point x="117.0" y="330.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="fr.projects.online_checkout.paypal.dto.PaypalAmountDTO" target="fr.projects.online_checkout.paypal.dto.PaypalModelDTO">
+      <point x="-37.75" y="-15.0" />
+      <point x="616.8200694444447" y="205.0" />
+      <point x="613.8200694444447" y="205.0" />
+      <point x="613.8200694444447" y="120.0" />
+      <point x="711.5625" y="120.0" />
+      <point x="-11.75" y="15.0" />
+    </edge>
+    <edge source="fr.projects.online_checkout.paypal.dto.PaypalPayerInfoDTO" target="fr.projects.online_checkout.paypal.dto.PaypalAddressDTO">
+      <point x="-39.25" y="-15.0" />
+      <point x="77.75" y="205.0" />
+      <point x="74.5" y="205.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="fr.projects.online_checkout.paypal.dto.PaypalLinksDTO" target="fr.projects.online_checkout.paypal.dto.PaypalModelDTO">
+      <point x="0.0" y="-15.0" />
+      <point x="383.38493055555546" y="100.0" />
+      <point x="695.8958333333335" y="100.0" />
+      <point x="-27.41666666666663" y="15.0" />
+    </edge>
+    <edge source="fr.projects.online_checkout.paypal.dto.PaypalOrderDTO" target="fr.projects.online_checkout.paypal.dto.PaypalAmountDTO">
+      <point x="45.666666666666686" y="-15.0" />
+      <point x="383.2974305555555" y="320.0" />
+      <point x="597.9450694444447" y="320.0" />
+      <point x="-56.625" y="15.0" />
+    </edge>
+    <edge source="fr.projects.online_checkout.paypal.dto.PaypalRelatedResourcesDTO" target="fr.projects.online_checkout.paypal.dto.PaypalModelDTO">
+      <point x="-82.91666666666663" y="-15.0" />
+      <point x="499.5284027777781" y="420.0" />
+      <point x="258.63076388888874" y="420.0" />
+      <point x="258.63076388888874" y="80.0" />
+      <point x="680.2291666666667" y="80.0" />
+      <point x="-43.08333333333337" y="15.0" />
+    </edge>
+    <edge source="fr.projects.online_checkout.paypal.dto.PaypalDetailsDTO" target="fr.projects.online_checkout.paypal.dto.PaypalModelDTO">
+      <point x="0.0" y="-15.0" />
+      <point x="695.3200694444447" y="130.0" />
+      <point x="719.3958333333333" y="130.0" />
+      <point x="-3.9166666666667425" y="15.0" />
+    </edge>
+    <edge source="fr.projects.online_checkout.paypal.dto.PaypalTransactionDTO" target="fr.projects.online_checkout.paypal.dto.PaypalRelatedResourcesDTO">
+      <point x="-42.25" y="-15.0" />
+      <point x="759.0492361111114" y="495.0" />
+      <point x="582.4450694444447" y="495.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="fr.projects.online_checkout.paypal.dto.PaypalCaptureDTO" target="fr.projects.online_checkout.paypal.dto.PaypalCurrencyDTO">
+      <point x="55.875" y="-15.0" />
+      <point x="920.5057638888889" y="330.0" />
+      <point x="926.5057638888889" y="330.0" />
+      <point x="-38.75" y="15.0" />
+    </edge>
+    <edge source="fr.projects.online_checkout.paypal.dto.PaypalPaymentDTO" target="fr.projects.online_checkout.paypal.dto.PaypalTransactionDTO">
+      <point x="-12.833333333333371" y="-15.0" />
+      <point x="873.3409027777781" y="570.0" />
+      <point x="801.2992361111114" y="570.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="fr.projects.online_checkout.paypal.dto.PaypalAuthorizationDTO" target="fr.projects.online_checkout.paypal.dto.PaypalAmountDTO">
+      <point x="0.0" y="-15.0" />
+      <point x="680.6307638888889" y="330.0" />
+      <point x="673.4450694444447" y="330.0" />
+      <point x="18.875" y="15.0" />
+    </edge>
+    <edge source="fr.projects.online_checkout.paypal.dto.PaypalSaleDTO" target="fr.projects.online_checkout.paypal.dto.PaypalCurrencyDTO">
+      <point x="-32.0" y="-15.0" />
+      <point x="1000.5682638888889" y="330.0" />
+      <point x="1004.0057638888889" y="330.0" />
+      <point x="38.75" y="15.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="744.5" y="320.0" />
+  <SelectedNodes />
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
