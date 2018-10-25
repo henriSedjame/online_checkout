@@ -28,13 +28,15 @@ public class PaypalPaymentServiceImpl implements PaypalPaymentService {
   //********************************************************************************************************************
 
   private PaypalExceptionBuilder<PaypalPaymentException> exceptionBuilder;
+  private PaypalExceptionMessages exceptionMessages;
 
   //********************************************************************************************************************
   // CONSTRUCTEUR
   //********************************************************************************************************************
 
-  public PaypalPaymentServiceImpl() {
+  public PaypalPaymentServiceImpl(PaypalExceptionMessages exceptionMessages) {
     this.exceptionBuilder = new PaypalExceptionBuilder<>(PaypalPaymentException.class);
+    this.exceptionMessages = exceptionMessages;
   }
 
   //********************************************************************************************************************
@@ -49,7 +51,7 @@ public class PaypalPaymentServiceImpl implements PaypalPaymentService {
       try {
         return payment.create(this.getPaypalContext(client.getClientId(), client.getSecret(), mode));
       } catch (Exception e) {
-        exceptionBuilder.addException(new PaypalPaymentException(PaypalExceptionMessages.APPROBATION_PAYMENT_IMPOSSIBLE));
+        exceptionBuilder.addException(exceptionMessages.APPROBATION_PAYMENT_IMPOSSIBLE);
       }
       return null;
     });
@@ -63,8 +65,8 @@ public class PaypalPaymentServiceImpl implements PaypalPaymentService {
   public Mono<Payment> executePayment(String paymentId, String payerId, PaypalClient client, String mode) throws PayPalRESTException {
     this.exceptionBuilder.clear();
 
-    if (Objects.isNull(paymentId)) this.exceptionBuilder.addException(new PaypalPaymentException(PaypalExceptionMessages.PAYMENT_ID_NULL));
-    if (Objects.isNull(payerId)) this.exceptionBuilder.addException(new PaypalPaymentException(PaypalExceptionMessages.PAYER_ID_NULL));
+    if (Objects.isNull(paymentId)) this.exceptionBuilder.addException(exceptionMessages.PAYMENT_ID_NULL);
+    if (Objects.isNull(payerId)) this.exceptionBuilder.addException(exceptionMessages.PAYER_ID_NULL);
 
     if (!exceptionBuilder.throwException()){
 
@@ -75,7 +77,7 @@ public class PaypalPaymentServiceImpl implements PaypalPaymentService {
         try {
           return payment.execute(this.getPaypalContext(client.getClientId(), client.getSecret(), mode), execution);
         } catch (Exception e) {
-          this.exceptionBuilder.addException(new PaypalPaymentException(PaypalExceptionMessages.EXECUTION_PAYMENT_IMPOSSIBLE));
+          this.exceptionBuilder.addException(exceptionMessages.EXECUTION_PAYMENT_IMPOSSIBLE);
         }
         return null;
       });
@@ -97,7 +99,7 @@ public class PaypalPaymentServiceImpl implements PaypalPaymentService {
           String orderId = getPaymentRelatedResources(payment).getOrder().getId();
 
           if (Objects.isNull(orderId))
-            this.exceptionBuilder.addException(new PaypalPaymentException(PaypalExceptionMessages.PAYMENT_ORDER_ID_NULL));
+            this.exceptionBuilder.addException(exceptionMessages.PAYMENT_ORDER_ID_NULL);
 
           Capture responseCapture = null;
 
@@ -111,7 +113,7 @@ public class PaypalPaymentServiceImpl implements PaypalPaymentService {
               order = Order.get(this.getPaypalContext(client.getClientId(), client.getSecret(), mode), orderId)
                 .setAmount(amount);
             } catch (PayPalRESTException e) {
-              this.exceptionBuilder.addException(new PaypalPaymentException(PaypalExceptionMessages.PAYMENT_ORDER_CREATION_IMPOSSIBLE));
+              this.exceptionBuilder.addException(exceptionMessages.PAYMENT_ORDER_CREATION_IMPOSSIBLE);
             }
 
             if (!this.exceptionBuilder.hasException()) {
@@ -119,7 +121,7 @@ public class PaypalPaymentServiceImpl implements PaypalPaymentService {
               try {
                 authorization = order.authorize(this.getPaypalContext(client.getClientId(), client.getSecret(), mode));
               } catch (PayPalRESTException e) {
-                this.exceptionBuilder.addException(new PaypalPaymentException(PaypalExceptionMessages.PAYMENT_ORDER_AUTHORIZATION_IMPOSSIBLE));
+                this.exceptionBuilder.addException(exceptionMessages.PAYMENT_ORDER_AUTHORIZATION_IMPOSSIBLE);
               }
 
               if (!this.exceptionBuilder.hasException()) {
@@ -129,14 +131,14 @@ public class PaypalPaymentServiceImpl implements PaypalPaymentService {
                 try {
                   responseCapture = authorization.capture(this.getPaypalContext(client.getClientId(), client.getSecret(), mode), capture);
                 } catch (PayPalRESTException e) {
-                  this.exceptionBuilder.addException(new PaypalPaymentException(PaypalExceptionMessages.PAYMENT_ORDER_CAPTURE_IMPOSSIBLE));
+                  this.exceptionBuilder.addException(exceptionMessages.PAYMENT_ORDER_CAPTURE_IMPOSSIBLE);
                 }
               }
             }
           }
           return responseCapture;
         } else {
-          this.exceptionBuilder.addException(new PaypalPaymentException(PaypalExceptionMessages.PAYMENT_NOT_APPROVED));
+          this.exceptionBuilder.addException(exceptionMessages.PAYMENT_NOT_APPROVED);
           return null;
         }
       });
@@ -164,7 +166,7 @@ public class PaypalPaymentServiceImpl implements PaypalPaymentService {
       try {
         return sale.refund(this.getPaypalContext(client.getClientId(), client.getSecret(), mode), refundRequest);
       } catch (PayPalRESTException e) {
-        exceptionBuilder.addException(new PaypalPaymentException(PaypalExceptionMessages.APPROBATION_PAYMENT_IMPOSSIBLE));
+        exceptionBuilder.addException(exceptionMessages.APPROBATION_PAYMENT_IMPOSSIBLE);
       }
       return null;
     });
@@ -189,7 +191,7 @@ public class PaypalPaymentServiceImpl implements PaypalPaymentService {
           final Authorization authorization = relatedResource.getAuthorization();
 
           if (Objects.isNull(authorization))
-            this.exceptionBuilder.addException(new PaypalPaymentException(PaypalExceptionMessages.PAYMENT_AUTHORIZATION_CAPTURE_NULL));
+            this.exceptionBuilder.addException(exceptionMessages.PAYMENT_AUTHORIZATION_CAPTURE_NULL);
 
           if (!this.exceptionBuilder.hasException()) {
 
@@ -204,7 +206,7 @@ public class PaypalPaymentServiceImpl implements PaypalPaymentService {
             try {
               responseCapture = authorization.capture(this.getPaypalContext(client.getClientId(), client.getSecret(), mode), capture);
             } catch (PayPalRESTException e) {
-              this.exceptionBuilder.addException(new PaypalPaymentException(PaypalExceptionMessages.PAYMENT_AUTHORIZATION_CAPTURE_IMPOSSIBLE));
+              this.exceptionBuilder.addException(exceptionMessages.PAYMENT_AUTHORIZATION_CAPTURE_IMPOSSIBLE);
             }
             return responseCapture;
           }
@@ -227,19 +229,19 @@ public class PaypalPaymentServiceImpl implements PaypalPaymentService {
     List<RelatedResources> relatedResources = null;
     RelatedResources relatedResource = null;
     if (transactions.isEmpty())
-      this.exceptionBuilder.addException(new PaypalPaymentException(PaypalExceptionMessages.PAYMENT_TRANSACTIONS_EMPTY));
+      this.exceptionBuilder.addException(exceptionMessages.PAYMENT_TRANSACTIONS_EMPTY);
     else {
       transaction = transactions.get(0);
       if (Objects.isNull(transaction))
-        this.exceptionBuilder.addException(new PaypalPaymentException(PaypalExceptionMessages.PAYMENT_TRANSACTION_NULL));
+        this.exceptionBuilder.addException(exceptionMessages.PAYMENT_TRANSACTION_NULL);
       else {
         relatedResources = transaction.getRelatedResources();
         if (relatedResources.isEmpty())
-          this.exceptionBuilder.addException(new PaypalPaymentException(PaypalExceptionMessages.PAYMENT_TRANSACTION_RELATED_SOURCES_EMPTY));
+          this.exceptionBuilder.addException(exceptionMessages.PAYMENT_TRANSACTION_RELATED_SOURCES_EMPTY);
         else {
           relatedResource = relatedResources.get(0);
           if (Objects.isNull(relatedResource))
-            this.exceptionBuilder.addException(new PaypalPaymentException(PaypalExceptionMessages.PAYMENT_TRANSACTION_RELATED_SOURCE_NULL));
+            this.exceptionBuilder.addException(exceptionMessages.PAYMENT_TRANSACTION_RELATED_SOURCE_NULL);
         }
       }
     }

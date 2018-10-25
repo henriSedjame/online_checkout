@@ -29,9 +29,16 @@ public class PaypalExceptionBuilder<T extends PayPalRESTException>{
 
   /**
    * Méthode permettant d'ajouter une nouvelle exception au builder
-   * @param exception
+   * @param message
    */
-  public void addException(T exception){
+  public void addException(String message) {
+    T exception = null;
+    try {
+      Constructor<T> constructor = exceptionClass.getConstructor(String.class);
+      exception = constructor.newInstance(message);
+    } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+      log.error(e.getMessage());
+    }
     this.exceptions.add(exception);
   }
 

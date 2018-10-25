@@ -1,5 +1,8 @@
 package fr.projects.online_checkout.model;
 
+import lombok.Data;
+
+@Data
 public class CarteBancaire {
   private String cvv;
   private String numero;

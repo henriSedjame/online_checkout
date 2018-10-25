@@ -4,6 +4,7 @@ import com.paypal.api.payments.Payment;
 import com.paypal.base.rest.PayPalRESTException;
 import fr.projects.online_checkout.paypal.configuration.PayPalConfig;
 import fr.projects.online_checkout.paypal.constants.PaypalMode;
+import fr.projects.online_checkout.paypal.exceptions.PaypalExceptionMessages;
 import fr.projects.online_checkout.paypal.model.PaypalClient;
 import fr.projects.online_checkout.paypal.providers.PaypalPaymentsProviders;
 import fr.projects.online_checkout.paypal.services.PaypalPaymentService;
@@ -34,10 +35,12 @@ public class PaypalPaymentServiceImplTest {
 
   @Autowired
   PayPalConfig config;
+  @Autowired
+  PaypalExceptionMessages exceptionMessages;
 
   @Before
   public void setUp() {
-    service = new PaypalPaymentServiceImpl();
+    service = new PaypalPaymentServiceImpl(exceptionMessages);
 
     payment = PaypalPaymentsProviders.createAPayment();
     authorizationPayment = PaypalPaymentsProviders.createAuthorizationPayment();
@@ -49,10 +52,11 @@ public class PaypalPaymentServiceImplTest {
   @Test
   public void shouldBeNotNull(){
     assertAll( "test",
-            () -> assertNotNull(config),
-            () -> assertNotNull(service),
-            () -> assertNotNull(payment),
-            () -> assertNotNull(authorizationPayment),
+      () -> assertNotNull(config),
+      () -> assertNotNull(exceptionMessages),
+      () -> assertNotNull(service),
+      () -> assertNotNull(payment),
+      () -> assertNotNull(authorizationPayment),
       () -> assertNotNull(orderPayment),
       () -> assertNotNull(client));
   }

@@ -1,4 +1,4 @@
-package fr.projects.online_checkout.paypal.mapper;
+package fr.projects.online_checkout.paypal.mapper.paypalToDTO;
 
 import com.paypal.api.payments.RedirectUrls;
 import fr.projects.online_checkout.paypal.dto.PaypalRedirectUrlsDTO;
