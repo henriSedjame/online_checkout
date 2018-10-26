@@ -1,7 +1,7 @@
 package fr.projects.online_checkout.paypal.mapper.paypalToModel;
 
 import com.paypal.api.payments.Payment;
-import fr.projects.online_checkout.model.Paiement;
+import fr.projects.online_checkout.core.model.Paiement;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;

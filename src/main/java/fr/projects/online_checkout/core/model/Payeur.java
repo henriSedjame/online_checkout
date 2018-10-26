@@ -1,4 +1,4 @@
-package fr.projects.online_checkout.model;
+package fr.projects.online_checkout.core.model;
 
 import lombok.Data;
 
