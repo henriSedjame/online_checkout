@@ -1,10 +1,14 @@
 package fr.projects.online_checkout.core.model;
 
-import lombok.Data;
+import lombok.*;
 
 import java.time.LocalDate;
 
-@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Builder
 public class Identite {
   private String nom;
   private String prenom;

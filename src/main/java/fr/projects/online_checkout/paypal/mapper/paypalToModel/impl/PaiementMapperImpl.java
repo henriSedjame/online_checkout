@@ -3,14 +3,19 @@ package fr.projects.online_checkout.paypal.mapper.paypalToModel.impl;
 import com.paypal.api.payments.*;
 import com.paypal.api.payments.Phone;
 import fr.projects.online_checkout.core.model.*;
+import fr.projects.online_checkout.core.utils.BigDecimalUtils;
+import fr.projects.online_checkout.core.utils.PaiementCalculator;
 import fr.projects.online_checkout.paypal.mapper.paypalToModel.PaiementMapper;
+import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-
-public class PaimentMapperImpl implements PaiementMapper {
+@Component
+public class PaiementMapperImpl implements PaiementMapper {
 
   //********************************************************************************************************************
   // METHODES
@@ -18,7 +23,6 @@ public class PaimentMapperImpl implements PaiementMapper {
 
   @Override
   public Payment toPaypalPayment(Paiement paiement) {
-
     return new Payment()
             .setIntent(paiement.getMotif().getPaypalLibelle())
             .setPayee(extractPayee(paiement))
@@ -34,26 +38,48 @@ public class PaimentMapperImpl implements PaiementMapper {
 
     List<Transaction> transactions = new ArrayList<>();
 
-    DetailPaiement detailPaiement = paiement.getDetailPaiement();
+    BigDecimal totalPanier = PaiementCalculator.calculTotalPanier(paiement.getPanier());
+
+    BigDecimal montantTaxe = paiement.getMontantTaxe();
+    final BigDecimal montantFraisGestion = paiement.getMontantFraisGestion();
+    final BigDecimal montantLivraison = paiement.getMontantLivraison();
+    final double pourcentageTaxe = paiement.getPourcentageTaxe();
+
+    BigDecimal total = totalPanier;
+
+    final Details details = new Details()
+      .setSubtotal(totalPanier.toPlainString());
+
+    if (!Objects.isNull(montantTaxe)) {
+      details.setTax(montantTaxe.toPlainString());
+      total = BigDecimalUtils.add(total, montantTaxe);
+    } else if (!Objects.isNull(pourcentageTaxe)) {
+      montantTaxe = BigDecimalUtils.mutiply(totalPanier, BigDecimalUtils.create(String.valueOf(pourcentageTaxe / 100)));
+      details.setTax(montantTaxe.toPlainString());
+      total = BigDecimalUtils.add(total, montantTaxe);
+    }
+
+    if (!Objects.isNull(montantFraisGestion)) {
+      details.setHandlingFee(montantFraisGestion.toPlainString());
+      total = BigDecimalUtils.add(total, montantFraisGestion);
+    }
+    if (!Objects.isNull(montantLivraison)) {
+      details.setShippingDiscount(montantLivraison.toPlainString());
+      total = BigDecimalUtils.add(total, montantLivraison);
+    }
+
+    Amount amount = new Amount()
+      .setCurrency(paiement.getDevisePaiement().name())
+      .setTotal(total.toPlainString())
+      .setDetails(details);
 
     Transaction transaction = new Transaction();
-    transaction.setAmount(extractAmount(detailPaiement));
-    transaction.setDescription(detailPaiement.getDescription());
+    transaction.setAmount(amount);
+    transaction.setDescription(paiement.getDescription());
     transaction.setItemList(extractItemList(paiement.getPanier()));
 
     transactions.add(transaction);
     return transactions;
-  }
-
-  private Amount extractAmount(DetailPaiement detailPaiement) {
-    return new Amount()
-            .setCurrency(detailPaiement.getDevisePaiement().name())
-            .setTotal(detailPaiement.getMontantTTC().toPlainString())
-            .setDetails(new Details()
-                    .setSubtotal(detailPaiement.getMontantHT().toPlainString())
-                    .setTax(detailPaiement.getMontantTaxe().toPlainString())
-                    .setHandlingFee(detailPaiement.getMontantFraisGestion().toPlainString())
-                    .setShippingDiscount(detailPaiement.getMontantLivraison().toPlainString()));
   }
 
   private ItemList extractItemList(Panier panier) {
@@ -68,7 +94,7 @@ public class PaimentMapperImpl implements PaiementMapper {
               .setCurrency(article.getDevise().name())
               .setDescription(article.getDescription())
               .setName(article.getNom())
-              .setPrice(article.getPrixHT().toPlainString())
+        .setPrice(article.getPrix().toPlainString())
               .setQuantity(String.valueOf(nbre));
 
       items.add(item);
@@ -82,7 +108,6 @@ public class PaimentMapperImpl implements PaiementMapper {
     Identite identite = payeur.getIdentite();
     Coordonnees coordonnees = payeur.getCoordonnees();
     Adresse adresse = coordonnees.getAdresse();
-    fr.projects.online_checkout.core.model.Phone phone = coordonnees.getPhone();
 
     Address address = new Address();
     address.setLine1(adresse.getNumero())

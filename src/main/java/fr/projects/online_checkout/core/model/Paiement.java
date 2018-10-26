@@ -1,18 +1,24 @@
 package fr.projects.online_checkout.core.model;
 
-import fr.projects.online_checkout.core.utils.PaiementCalculator;
-import lombok.Data;
+import lombok.*;
 
-@Data
+import java.math.BigDecimal;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Builder
 public class Paiement {
+  private String description;
   private Payeur payeur;
   private Beneficiaire beneficiaire;
   private PaiementMethods methodeDePaiement;
-  private DetailPaiement detailPaiement;
   private Panier panier;
   private MotifPaiement motif;
-
-  public DetailPaiement getDetailPaiement() {
-    return PaiementCalculator.construireDetailPaiement(this);
-  }
+  private Devise devisePaiement;
+  private BigDecimal montantLivraison;
+  private BigDecimal montantTaxe;
+  private BigDecimal montantFraisGestion;
+  private double pourcentageTaxe;
 }

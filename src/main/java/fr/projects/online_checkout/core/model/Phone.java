@@ -1,8 +1,12 @@
 package fr.projects.online_checkout.core.model;
 
-import lombok.Data;
+import lombok.*;
 
-@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Builder
 public class Phone {
   private String indicatif;
   private String numero;

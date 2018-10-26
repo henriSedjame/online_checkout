@@ -1,11 +1,16 @@
 package fr.projects.online_checkout.core.model;
 
-import lombok.Data;
+import lombok.*;
 
 import java.util.Set;
 import java.util.TreeSet;
 
-@Data
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Builder
 public class Personne {
   private TypePersonne type;
   private Coordonnees coordonnees;

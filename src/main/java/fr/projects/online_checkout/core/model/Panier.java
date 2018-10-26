@@ -1,10 +1,18 @@
 package fr.projects.online_checkout.core.model;
 
-import lombok.Data;
+import lombok.*;
 
+import java.math.BigDecimal;
 import java.util.Set;
+import java.util.TreeSet;
 
-@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Builder
 public class Panier {
-  private Set<LigneCommande> ligneCommandes;
+  private Set<LigneCommande> ligneCommandes = new TreeSet<>();
+  private BigDecimal totalHT;
+  private BigDecimal totalTTC;
 }
