@@ -1,13 +1,7 @@
 package fr.projects.online_checkout.paypal.exceptions;
 
-import com.paypal.base.rest.PayPalRESTException;
-import lombok.Getter;
+import fr.projects.online_checkout.core.exceptions.ExceptionBuilder;
 import lombok.extern.slf4j.Slf4j;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @Project online_checkout
@@ -17,77 +11,10 @@ import java.util.List;
  */
 
 @Slf4j
-public class PaypalExceptionBuilder<T extends PayPalRESTException>{
+public class PaypalExceptionBuilder extends ExceptionBuilder<PaypalPaymentException> {
 
-  @Getter
-  private List<T> exceptions = new ArrayList<>();
-  private Class<T> exceptionClass;
-
-  public PaypalExceptionBuilder(Class<T> exceptionClass) {
-    this.exceptionClass = exceptionClass;
+  public PaypalExceptionBuilder(Class<PaypalPaymentException> exceptionClass) {
+    super(exceptionClass);
   }
 
-  /**
-   * Méthode permettant d'ajouter une nouvelle exception au builder
-   * @param message
-   */
-  public void addException(String message) {
-    T exception = null;
-    try {
-      Constructor<T> constructor = exceptionClass.getConstructor(String.class);
-      exception = constructor.newInstance(message);
-    } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-      log.error(e.getMessage());
-    }
-    this.exceptions.add(exception);
-  }
-
-  /**
-   * Méthode permettant de vider la liste des arguments du builder
-   */
-  public void clear(){
-    this.exceptions.clear();
-  }
-
-  /**
-   * Méthode permettant de construire une exception avec un message résumant les différentes erreurs de la liste des exceptions
-   * @return
-   */
-  public T buildException(){
-
-    T exception = null;
-
-    StringBuilder exceptionMessageBuilder = new StringBuilder();
-
-    // TODO implémenter la méthode de construction de l'exception finale
-
-
-    try {
-      Constructor<T> constructor = exceptionClass.getConstructor(String.class);
-      exception = constructor.newInstance(exceptionMessageBuilder.toString());
-    } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-      log.error(e.getMessage());
-    }
-
-    this.clear();
-
-    return exception;
-  }
-
-  /**
-   * Méthode permettant de lancer l'exception finale
-   * @throws PayPalRESTException
-   */
-  public boolean throwException() throws PayPalRESTException {
-    if(this.hasException()) throw this.buildException();
-    return false;
-  }
-
-  /**
-   * Méthode permettant de savoir si le builder a des exceptions
-   * @return
-   */
-  public boolean hasException(){
-    return !this.exceptions.isEmpty();
-  }
 }

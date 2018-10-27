@@ -1,6 +1,8 @@
 package fr.projects.online_checkout.paypal.mapper.paypalToModel.impl;
 
 import com.paypal.api.payments.Payment;
+import fr.projects.online_checkout.core.exceptions.ExceptionMessages;
+import fr.projects.online_checkout.core.exceptions.PaypalMerchandEmailMissingException;
 import fr.projects.online_checkout.core.model.*;
 import fr.projects.online_checkout.core.utils.BigDecimalUtils;
 import fr.projects.online_checkout.paypal.mapper.paypalToModel.PaiementMapper;
@@ -9,6 +11,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -36,10 +39,13 @@ public class PaiementMapperImplTest {
 
   PaiementMapper mapper;
 
+  @Autowired
+  ExceptionMessages exceptionMessages;
+
   @Before
   public void setUp() {
 
-    mapper = new PaiementMapperImpl();
+    mapper = new PaiementMapperImpl(exceptionMessages);
 
     final Identite identite1 = Identite.builder()
       .nom("SEDJAME")
@@ -48,6 +54,7 @@ public class PaiementMapperImplTest {
       .build();
 
     final Coordonnees coordonnees1 = Coordonnees.builder()
+      .email("sedhjodev@gmail.com")
       .adresse(Adresse.builder()
         .numero("25")
         .rue("rue de la paix")
@@ -60,9 +67,13 @@ public class PaiementMapperImplTest {
         .build())
       .build();
 
+    final IdentifiantsPaypal identifiantsPaypal = IdentifiantsPaypal.builder()
+      .email("sedhjodev-facilitator@gmail.com")
+      .build();
     Beneficiaire beneficiaire = new Beneficiaire();
     beneficiaire.setCoordonnees(coordonnees1);
     beneficiaire.setIdentite(identite1);
+    beneficiaire.setIdentifiantsPaypal(identifiantsPaypal);
     beneficiaire.setType(TypePersonne.PHYSIQUE);
 
     final Identite identite2 = Identite.builder()
@@ -130,7 +141,7 @@ public class PaiementMapperImplTest {
   }
 
   @Test
-  public void toPaypalPayment() {
+  public void toPaypalPayment() throws PaypalMerchandEmailMissingException {
     final Payment payment = mapper.toPaypalPayment(paiement);
     assertNotNull(payment);
     log.info(payment.toJSON());

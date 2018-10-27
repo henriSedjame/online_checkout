@@ -16,4 +16,5 @@ public class Personne {
   private Coordonnees coordonnees;
   private Identite identite;
   private Set<CarteBancaire> carteBancaires = new TreeSet<>();
+  private IdentifiantsPaypal identifiantsPaypal;
 }

@@ -11,7 +11,7 @@ import org.springframework.context.annotation.PropertySource;
  * @Class purposes : .......
  */
 @Configuration
-@PropertySource("classpath:error_messages.properties")
+@PropertySource("classpath:paypal_error_messages.properties")
 public class PaypalExceptionMessages {
 
   @Value("${payment.approbation.impossible}")

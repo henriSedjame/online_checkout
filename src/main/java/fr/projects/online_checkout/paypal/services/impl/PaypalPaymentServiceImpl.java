@@ -27,7 +27,7 @@ public class PaypalPaymentServiceImpl implements PaypalPaymentService {
   // ATTRIBUTS
   //********************************************************************************************************************
 
-  private PaypalExceptionBuilder<PaypalPaymentException> exceptionBuilder;
+  private PaypalExceptionBuilder exceptionBuilder;
   private PaypalExceptionMessages exceptionMessages;
 
   //********************************************************************************************************************
@@ -35,7 +35,7 @@ public class PaypalPaymentServiceImpl implements PaypalPaymentService {
   //********************************************************************************************************************
 
   public PaypalPaymentServiceImpl(PaypalExceptionMessages exceptionMessages) {
-    this.exceptionBuilder = new PaypalExceptionBuilder<>(PaypalPaymentException.class);
+    this.exceptionBuilder = new PaypalExceptionBuilder(PaypalPaymentException.class);
     this.exceptionMessages = exceptionMessages;
   }
 

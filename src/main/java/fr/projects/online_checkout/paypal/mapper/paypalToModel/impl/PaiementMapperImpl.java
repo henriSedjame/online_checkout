@@ -2,9 +2,12 @@ package fr.projects.online_checkout.paypal.mapper.paypalToModel.impl;
 
 import com.paypal.api.payments.*;
 import com.paypal.api.payments.Phone;
+import fr.projects.online_checkout.core.exceptions.ExceptionMessages;
+import fr.projects.online_checkout.core.exceptions.PaypalMerchandEmailMissingException;
 import fr.projects.online_checkout.core.model.*;
 import fr.projects.online_checkout.core.utils.BigDecimalUtils;
 import fr.projects.online_checkout.core.utils.PaiementCalculator;
+import fr.projects.online_checkout.core.utils.RequireObjects;
 import fr.projects.online_checkout.paypal.mapper.paypalToModel.PaiementMapper;
 import org.springframework.stereotype.Component;
 
@@ -18,11 +21,25 @@ import java.util.Objects;
 public class PaiementMapperImpl implements PaiementMapper {
 
   //********************************************************************************************************************
+  // ATTRIBUTS
+  //********************************************************************************************************************
+  private ExceptionMessages exceptionMessages;
+
+  //********************************************************************************************************************
+  // CONSTRUCTEUR
+  //********************************************************************************************************************
+
+  public PaiementMapperImpl(ExceptionMessages exceptionMessages) {
+    this.exceptionMessages = exceptionMessages;
+  }
+
+
+  //********************************************************************************************************************
   // METHODES
   //********************************************************************************************************************
 
   @Override
-  public Payment toPaypalPayment(Paiement paiement) {
+  public Payment toPaypalPayment(Paiement paiement) throws PaypalMerchandEmailMissingException {
     return new Payment()
             .setIntent(paiement.getMotif().getPaypalLibelle())
             .setPayee(extractPayee(paiement))
@@ -122,7 +139,7 @@ public class PaiementMapperImpl implements PaiementMapper {
     return new Payer()
             .setPaymentMethod(paiement.getMethodeDePaiement().getLibelle())
             .setPayerInfo(new PayerInfo()
-                    .setPayerId(payeur.getPaypalPayerID())
+              .setPayerId((payeur.getIdentifiantsPaypal() != null) ? payeur.getIdentifiantsPaypal().getId() : null)
                     .setBillingAddress(address)
                     .setBirthDate(identite.getDateNaissance().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")))
                     .setEmail(coordonnees.getEmail())
@@ -131,17 +148,66 @@ public class PaiementMapperImpl implements PaiementMapper {
                     .setPhone("(" + indicatif + ")" + numero));
   }
 
-  private Payee extractPayee(Paiement paiement) {
+  /**
+   * Méthode permettant de construire un Payee paypal à partir d'un paiement
+   *
+   * @param paiement
+   * @return
+   * @throws PaypalMerchandEmailMissingException
+   */
+  private Payee extractPayee(Paiement paiement) throws PaypalMerchandEmailMissingException {
+    //Extraire le beneficiaire
     Beneficiaire beneficiaire = paiement.getBeneficiaire();
-    Identite identite = beneficiaire.getIdentite();
-    Coordonnees coordonnees = beneficiaire.getCoordonnees();
-    fr.projects.online_checkout.core.model.Phone phone = coordonnees.getPhone();
+
+    //Extraire les différentes propriétes d'une Personne
+    Identite identite = null;
+    Coordonnees coordonnees = null;
+    IdentifiantsPaypal identifiantsPaypal = null;
+
+    //Si le beneficiaire est non null extraire ses propriétés
+    if (Objects.nonNull(beneficiaire)) {
+      identite = beneficiaire.getIdentite();
+      coordonnees = beneficiaire.getCoordonnees();
+      identifiantsPaypal = beneficiaire.getIdentifiantsPaypal();
+    }
+
+    //Si les coordonnées sont non null extraire le phone
+    fr.projects.online_checkout.core.model.Phone phone = null;
+    if (Objects.nonNull(coordonnees)) {
+      phone = coordonnees.getPhone();
+    }
+
+    String email = null;
+    String nom = null;
+    String prenom = null;
+    String indicatif = null;
+    String numero = null;
+
+    //Si les identifiants paypal sont non null extraire le mail du bénéficaire
+    if (Objects.nonNull(identifiantsPaypal)) email = identifiantsPaypal.getEmail();
+
+    //Vérifier que l'email du bénéficiaire existe bien
+    RequireObjects.requireNotNull(email, PaypalMerchandEmailMissingException.class, exceptionMessages.PAYPAL_MERCHAND_EMAIL_NULL);
+
+    //Si l'identité est non null extraire les propriétes non et prenom
+    if (Objects.nonNull(identite)) {
+      prenom = identite.getPrenom();
+      nom = identite.getNom();
+    }
+
+    //Si phone est non null extraire les propriétes indicatif et numero
+    if (Objects.nonNull(phone)) {
+      indicatif = phone.getIndicatif();
+      numero = phone.getNumero();
+    }
+
+    //Retouner un Payee paypal avec les propriétes extraites du bénéficiaire
     return new Payee()
-            .setEmail(coordonnees.getEmail())
-            .setFirstName(identite.getPrenom())
-            .setLastName(identite.getNom())
+      .setEmail(email)
+      .setFirstName(prenom)
+      .setLastName(nom)
             .setPhone(new Phone()
-                    .setCountryCode(phone.getIndicatif())
-                    .setNationalNumber(phone.getNumero()));
+              .setCountryCode(indicatif)
+              .setNationalNumber(numero));
   }
 }

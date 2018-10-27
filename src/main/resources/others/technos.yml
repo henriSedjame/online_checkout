@@ -1,0 +1,39 @@
+Technologies utilisées ou prévues:
+
+  Developpement:
+
+    Spring:
+      core: pour l'injection de dépendances et l'inversion de contrôle
+
+      webflux: pour le développement de services Rest réactifs
+
+      aop: pour la définition des éventuels aspects
+
+      data Rest: pour les repositories
+
+      data_Mongo: pour la persistence des données
+
+    MongoDB: pour la persistence des données
+
+    ElasticSearch: pour la mise en place ultérieur de statistiques
+
+    Lombok: pour la génération de code par annotation
+
+    MapStruct: pour les interfaces de mapping modele <-> DTO
+
+    Swagger: pour l'interface d'exposition des services Rest
+
+    JUnit5: pour les tests
+
+    SonarLint: (intégré à IntelliJ) pour l'analyse de la robustesse du code
+
+  Integration_continue:
+
+    circleCi: pour le lancement des tests à chaque commit vers le repo GIT
+
+    Jacoco: pour la mesure de la couvertur du code
+
+    Docker: pour le déploiement
+
+
+
