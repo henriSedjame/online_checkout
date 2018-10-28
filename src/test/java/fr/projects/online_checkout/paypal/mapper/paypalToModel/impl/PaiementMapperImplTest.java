@@ -1,8 +1,7 @@
 package fr.projects.online_checkout.paypal.mapper.paypalToModel.impl;
 
 import com.paypal.api.payments.Payment;
-import fr.projects.online_checkout.core.exceptions.ExceptionMessages;
-import fr.projects.online_checkout.core.exceptions.PaypalMerchandEmailMissingException;
+import fr.projects.online_checkout.core.exceptions.*;
 import fr.projects.online_checkout.core.model.*;
 import fr.projects.online_checkout.core.utils.BigDecimalUtils;
 import fr.projects.online_checkout.paypal.mapper.paypalToModel.PaiementMapper;
@@ -115,6 +114,7 @@ public class PaiementMapperImplTest {
       .nombreArticle(1)
       .build();
 
+
     Set<LigneCommande> lc = new TreeSet<>();
     lc.add(ligneCommande);
 
@@ -141,7 +141,7 @@ public class PaiementMapperImplTest {
   }
 
   @Test
-  public void toPaypalPayment() throws PaypalMerchandEmailMissingException {
+  public void toPaypalPayment() throws PaypalMerchandEmailMissingException, PaiementMotifMissingException, PanierMissingException, UnExpectedValueException, ActeursPaiementMissingException {
     final Payment payment = mapper.toPaypalPayment(paiement);
     assertNotNull(payment);
     log.info(payment.toJSON());

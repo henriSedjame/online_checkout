@@ -12,6 +12,12 @@ import java.util.Set;
 
 public class PaiementCalculator {
 
+  /**
+   * Méthode permettant de calculer le total d'un panier
+   *
+   * @param panier
+   * @return
+   */
   public static BigDecimal calculTotalPanier(Panier panier) {
     final Set<LigneCommande> ligneCommandes = panier.getLigneCommandes();
 
@@ -27,19 +33,22 @@ public class PaiementCalculator {
 
   }
 
+  /**
+   * Méthode permettant de calculer le prix d'un article en prenant en compte les réductions
+   * @param article
+   * @return
+   */
   private static BigDecimal calculPrixHTArticle(Article article) {
-
     BigDecimal prixHT = article.getPrix();
     final Reduction reduction = article.getReduction();
-    if (!Objects.isNull(reduction)) {
+    if (Objects.nonNull(reduction)) {
       final double montant = reduction.getMontant();
       final double pourcentage = reduction.getPourcentage();
-      if (!Objects.isNull(montant))
+      if (Objects.nonNull(montant))
         prixHT = BigDecimalUtils.substract(prixHT, BigDecimalUtils.create(String.valueOf(montant)));
-      else if (!Objects.isNull(pourcentage) && pourcentage < 100)
+      else if (Objects.nonNull(pourcentage) && pourcentage < 100)
         prixHT = BigDecimalUtils.mutiply(prixHT, BigDecimalUtils.create(String.valueOf(1 - (pourcentage / 100))));
     }
-
     return prixHT;
   }
 }

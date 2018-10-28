@@ -2,6 +2,7 @@ package fr.projects.online_checkout.core.model;
 
 import lombok.*;
 
+import javax.validation.Valid;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -12,9 +13,12 @@ import java.util.TreeSet;
 @Setter
 @Builder
 public class Personne {
-  private TypePersonne type;
+  private TypePersonne type = TypePersonne.PHYSIQUE;
+  @Valid
   private Coordonnees coordonnees;
+  @Valid
   private Identite identite;
-  private Set<CarteBancaire> carteBancaires = new TreeSet<>();
+  private Set<@Valid CarteBancaire> carteBancaires = new TreeSet<>();
+  @Valid
   private IdentifiantsPaypal identifiantsPaypal;
 }

@@ -42,6 +42,21 @@ public abstract class ExceptionBuilder<T extends Exception> {
     this.exceptions.add(exception);
   }
 
+  /**
+   * @param message
+   * @param throwable
+   */
+  public void addException(String message, Throwable throwable) {
+    T exception = null;
+    try {
+      Constructor<T> constructor = this.exceptionClass.getConstructor(String.class, Throwable.class);
+      exception = constructor.newInstance(message, throwable);
+    } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+      log.error(e.getMessage());
+    }
+    this.exceptions.add(exception);
+  }
+
 
   /**
    * Méthode permettant de vider la liste des arguments du builder

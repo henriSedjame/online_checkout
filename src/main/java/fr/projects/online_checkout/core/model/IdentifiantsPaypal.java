@@ -2,6 +2,8 @@ package fr.projects.online_checkout.core.model;
 
 import lombok.*;
 
+import javax.validation.constraints.Email;
+
 /**
  * @Project online_checkout
  * @Author Henri Joel SEDJAME
@@ -16,5 +18,6 @@ import lombok.*;
 @Builder
 public class IdentifiantsPaypal {
   private String id;
+  @Email
   private String email;
 }

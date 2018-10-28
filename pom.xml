@@ -25,14 +25,26 @@
     <kotlin.version>1.2.71</kotlin.version>
     <org.mapstruct.version>1.2.0.CR2</org.mapstruct.version>
     <springfox-swagger.version>2.7.0</springfox-swagger.version>
+    <aspectj.version>1.7.4</aspectj.version>
   </properties>
 
   <dependencies>
 
-    <!-- Spring Batch -->
+    <!-- Spring AOP -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-aop</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.aspectj</groupId>
+      <artifactId>aspectjrt</artifactId>
+      <version>${aspectj.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.aspectj</groupId>
+      <artifactId>aspectjtools</artifactId>
+      <version>${aspectj.version}</version>
     </dependency>
 
     <!-- Spring Webflux -->
@@ -59,7 +71,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <scope>test</scope>
+      <!--<scope>test</scope>-->
     </dependency>
     <dependency>
       <groupId>io.projectreactor</groupId>
@@ -69,6 +81,12 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
+      <version>5.1.0</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
       <version>5.1.0</version>
       <scope>test</scope>
     </dependency>
@@ -85,6 +103,13 @@
       <groupId>com.paypal.sdk</groupId>
       <artifactId>rest-api-sdk</artifactId>
       <version>LATEST</version>
+    </dependency>
+
+    <!-- Stripe -->
+    <dependency>
+      <groupId>com.stripe</groupId>
+      <artifactId>stripe-java</artifactId>
+      <version>7.0.0</version>
     </dependency>
 
     <!-- Apache Commons -->

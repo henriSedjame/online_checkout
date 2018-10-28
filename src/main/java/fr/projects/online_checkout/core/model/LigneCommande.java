@@ -1,6 +1,12 @@
 package fr.projects.online_checkout.core.model;
 
+import fr.projects.online_checkout.core.utils.RequireObjects;
 import lombok.*;
+
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -8,7 +14,11 @@ import lombok.*;
 @Setter
 @Builder
 public class LigneCommande implements Comparable<LigneCommande> {
+  @Valid
+  @NotNull
   private Article article;
+  @Positive
+  @Min(1)
   private int nombreArticle;
 
   /**
@@ -51,6 +61,14 @@ public class LigneCommande implements Comparable<LigneCommande> {
    */
   @Override
   public int compareTo(LigneCommande ligneCommande) {
+    try {
+      RequireObjects.requireNotNull(this.article, Exception.class, "");
+      RequireObjects.requireNotNull(ligneCommande.article, Exception.class, "");
+      RequireObjects.require(this.nombreArticle, s -> s > 0, Exception.class, "");
+      RequireObjects.require(ligneCommande.nombreArticle, s -> s > 0, Exception.class, "");
+    } catch (Exception e) {
+      return 0;
+    }
     return this.article.compareTo(ligneCommande.article);
   }
 }

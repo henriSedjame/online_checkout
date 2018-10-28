@@ -2,6 +2,8 @@ package fr.projects.online_checkout.core.model;
 
 import lombok.*;
 
+import javax.validation.constraints.Future;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @NoArgsConstructor
@@ -10,8 +12,12 @@ import java.time.LocalDate;
 @Setter
 @Builder
 public class CarteBancaire implements Comparable<CarteBancaire> {
+  @NotNull
   private String cvv;
+  @NotNull
   private String numero;
+  @NotNull
+  @Future
   private LocalDate dateExpiration;
 
   /**

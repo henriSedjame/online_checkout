@@ -8,4 +8,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Beneficiaire extends Personne {
+  private IdentifiantStripe identifiantStripe;
+  private InfoEntreprise infosInsee;
 }

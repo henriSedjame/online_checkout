@@ -1,8 +1,10 @@
 package fr.projects.online_checkout.paypal.mapper.paypalToModel;
 
 import com.paypal.api.payments.Payment;
-import fr.projects.online_checkout.core.exceptions.PaypalMerchandEmailMissingException;
+import fr.projects.online_checkout.core.exceptions.*;
 import fr.projects.online_checkout.core.model.Paiement;
+
+import javax.validation.Valid;
 
 
 public interface PaiementMapper {
@@ -13,6 +15,6 @@ public interface PaiementMapper {
    * @param paiement
    * @return
    */
-  Payment toPaypalPayment(Paiement paiement) throws PaypalMerchandEmailMissingException;
+  Payment toPaypalPayment(@Valid Paiement paiement) throws PaypalMerchandEmailMissingException, ActeursPaiementMissingException, UnExpectedValueException, PanierMissingException, PaiementMotifMissingException;
 
 }

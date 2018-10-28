@@ -2,6 +2,8 @@ package fr.projects.online_checkout.core.model;
 
 import lombok.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 
 @NoArgsConstructor
@@ -13,9 +15,11 @@ public class Article implements Comparable<Article> {
   private String nom;
   private String description;
   private String categorie;
+  @Positive
   private BigDecimal prix;
+  @Valid
   private Reduction reduction;
-  private Devise devise;
+  private Devise devise = Devise.EUR;
 
   /**
    * Compares this object with the specified object for order.  Returns a

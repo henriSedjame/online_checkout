@@ -82,7 +82,6 @@ public class PaypalPaymentServiceImplTest {
 
   @Test
   public void authorizePayment() {
-
   }
 
   @Test
