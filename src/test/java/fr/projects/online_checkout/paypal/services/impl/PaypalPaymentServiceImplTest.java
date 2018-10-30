@@ -1,7 +1,6 @@
 package fr.projects.online_checkout.paypal.services.impl;
 
 import com.paypal.api.payments.Payment;
-import com.paypal.base.rest.PayPalRESTException;
 import fr.projects.online_checkout.paypal.constants.PaypalMode;
 import fr.projects.online_checkout.paypal.exceptions.PaypalExceptionMessages;
 import fr.projects.online_checkout.paypal.providers.PaypalPaymentsProviders;
@@ -37,8 +36,6 @@ public class PaypalPaymentServiceImplTest {
 
   @Before
   public void setUp() {
-    //service = new PaypalPaymentServiceImpl(exceptionMessages);
-
     payment = PaypalPaymentsProviders.createAPayment();
     authorizationPayment = PaypalPaymentsProviders.createAuthorizationPayment();
     orderPayment = PaypalPaymentsProviders.createOrderPayment();
@@ -66,7 +63,7 @@ public class PaypalPaymentServiceImplTest {
   }
 
   @Test
-  public void executePayment() throws PayPalRESTException {
+  public void executePayment() {
 
     service.approvePayment(payment).subscribe(response -> {
       assertNotNull(response);
