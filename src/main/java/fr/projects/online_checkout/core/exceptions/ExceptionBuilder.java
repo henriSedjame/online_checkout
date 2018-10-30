@@ -57,7 +57,6 @@ public abstract class ExceptionBuilder<T extends Exception> {
     this.exceptions.add(exception);
   }
 
-
   /**
    * Méthode permettant de vider la liste des arguments du builder
    */
@@ -76,12 +75,34 @@ public abstract class ExceptionBuilder<T extends Exception> {
 
     StringBuilder exceptionMessageBuilder = new StringBuilder();
 
-    // TODO implémenter la méthode de construction de l'exception finale
-
+    this.exceptions.forEach(e -> {
+      exceptionMessageBuilder.append(e.getMessage());
+    });
 
     try {
       Constructor<T> constructor = exceptionClass.getConstructor(String.class);
       exception = constructor.newInstance(exceptionMessageBuilder.toString());
+    } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+      log.error(e.getMessage());
+    }
+
+    this.clear();
+
+    return exception;
+  }
+
+  /**
+   * Méthode permettant de construire une exception avec un message résumant les différentes erreurs de la liste des exceptions
+   *
+   * @return
+   */
+  public T buildException(String message, Throwable t) {
+
+    T exception = null;
+
+    try {
+      Constructor<T> constructor = exceptionClass.getConstructor(String.class, Throwable.class);
+      exception = constructor.newInstance(message, t);
     } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
       log.error(e.getMessage());
     }
@@ -108,5 +129,14 @@ public abstract class ExceptionBuilder<T extends Exception> {
    */
   public boolean hasException() {
     return !this.exceptions.isEmpty();
+  }
+
+  /**
+   * Metode permettant de vérifier qu'il y aucune exception
+   *
+   * @return
+   */
+  public boolean isEmpty() {
+    return this.exceptions.isEmpty();
   }
 }

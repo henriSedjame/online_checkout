@@ -14,6 +14,7 @@ import org.springframework.context.annotation.PropertySource;
 @PropertySource("classpath:paypal_error_messages.properties")
 public class PaypalExceptionMessages {
 
+
   @Value("${payment.approbation.impossible}")
   public String APPROBATION_PAYMENT_IMPOSSIBLE;
   @Value("${execution.payment.impossible}")
@@ -44,5 +45,14 @@ public class PaypalExceptionMessages {
   public String PAYMENT_NOT_APPROVED;
   @Value("${payment.authorization.capture.null}")
   public String PAYMENT_AUTHORIZATION_CAPTURE_NULL;
-
+  @Value("${refund.payment.impossible}")
+  public String REFUND_PAYMENT_IMPOSSIBLE;
+  @Value("${refund.payment.parameters.missing}")
+  public String REFUND_PAYMENT_PARAMETERS_MISSING;
+  @Value("${capture.authorization.payment.parameters.missing}")
+  public String CAPTURE_AUTHORIZATION_PAYMENT_PARAMETERS_MISSING;
+  @Value("${capture.order.payment.parameters.missing}")
+  public String CAPTURE_ORDER_PAYMENT_PARAMETERS_MISSING;
+  @Value("${execute.payment.parameters.missing}")
+  public String EXECUTE_PAYMENT_PARAMETERS_MISSING;
 }

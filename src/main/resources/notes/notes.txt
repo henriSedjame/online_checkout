@@ -1,0 +1,10 @@
+//*******************************************************************************************************************//
+//                                               CONCERNANT LES ASPECTS                                              //
+//*******************************************************************************************************************//
+
+Les aspects sont des classes java annotées @Aspect et@Component pour pouvoir s'appliquer sur des composants spring.
+Ils ne s'appliquent que si le composant Spring sur lequel il agit est injecté (soit annoté @Autowired, soit injecté via
+le constructeur d'un autre composant)
+
+
+//*********************************************************************************************************************//

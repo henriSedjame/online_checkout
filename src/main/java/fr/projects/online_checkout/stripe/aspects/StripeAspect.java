@@ -7,18 +7,10 @@ import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 
-/**
- *
- *@Project online_checkout
- *@Author Henri Joel SEDJAME
- *@Date 28/10/2018
- *
- *@Class purposes : .......
- */
 @Aspect
 @Component
 @Slf4j
-public aspect StripeAspect {
+public class StripeAspect {
 
   @Before("stripePointCut()")
   public void stripeSecretKeyAdvice() {

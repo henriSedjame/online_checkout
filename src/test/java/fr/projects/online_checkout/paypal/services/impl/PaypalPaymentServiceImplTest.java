@@ -2,10 +2,8 @@ package fr.projects.online_checkout.paypal.services.impl;
 
 import com.paypal.api.payments.Payment;
 import com.paypal.base.rest.PayPalRESTException;
-import fr.projects.online_checkout.paypal.configuration.PayPalConfig;
 import fr.projects.online_checkout.paypal.constants.PaypalMode;
 import fr.projects.online_checkout.paypal.exceptions.PaypalExceptionMessages;
-import fr.projects.online_checkout.paypal.model.PaypalClient;
 import fr.projects.online_checkout.paypal.providers.PaypalPaymentsProviders;
 import fr.projects.online_checkout.paypal.services.PaypalPaymentService;
 import fr.projects.online_checkout.paypal.utils.PaypalPaymentUtils;
@@ -29,41 +27,38 @@ public class PaypalPaymentServiceImplTest {
   Payment payment;
   Payment authorizationPayment;
   Payment orderPayment;
-  PaypalClient client;
   String mode;
-  PaypalPaymentService service;
 
   @Autowired
-  PayPalConfig config;
+  PaypalPaymentService service;
+
   @Autowired
   PaypalExceptionMessages exceptionMessages;
 
   @Before
   public void setUp() {
-    service = new PaypalPaymentServiceImpl(exceptionMessages);
+    //service = new PaypalPaymentServiceImpl(exceptionMessages);
 
     payment = PaypalPaymentsProviders.createAPayment();
     authorizationPayment = PaypalPaymentsProviders.createAuthorizationPayment();
     orderPayment = PaypalPaymentsProviders.createOrderPayment();
-    client = config.getClient();
     mode = PaypalMode.SANDBOX.name().toLowerCase();
   }
 
   @Test
   public void shouldBeNotNull(){
     assertAll( "test",
-      () -> assertNotNull(config),
       () -> assertNotNull(exceptionMessages),
       () -> assertNotNull(service),
       () -> assertNotNull(payment),
       () -> assertNotNull(authorizationPayment),
-      () -> assertNotNull(orderPayment),
-      () -> assertNotNull(client));
+            () -> assertNotNull(orderPayment));
   }
 
 
   @After
   public void tearDown() {
+
   }
 
   @Test
@@ -72,16 +67,22 @@ public class PaypalPaymentServiceImplTest {
 
   @Test
   public void executePayment() throws PayPalRESTException {
-    service.approvePayment(payment, client, mode).subscribe(response -> {
+
+    service.approvePayment(payment).subscribe(response -> {
       assertNotNull(response);
       String approvalUrl = PaypalPaymentUtils.getApprovalUrl(response);
       assertNotNull(approvalUrl);
       log.info(approvalUrl);
-    });
+    }, error -> {
+      log.error(error.getMessage());
+    }, () -> log.info("approbation complète"));
+
+
   }
 
   @Test
   public void authorizePayment() {
+
   }
 
   @Test

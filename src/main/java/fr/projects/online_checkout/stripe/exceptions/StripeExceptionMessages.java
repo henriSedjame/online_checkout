@@ -15,4 +15,10 @@ import org.springframework.context.annotation.PropertySource;
 public class StripeExceptionMessages {
   @Value("${stripe.creation.compte.impossible}")
   public String STRIPE_CREATION_COMPTE_IMPOSSIBLE;
+  @Value("${stripe.recuperation.compte.impossible}")
+  public String STRIPE_RECUPERATION_COMPTE_IMPOSSIBLE;
+  @Value("${stripe.update.compte.impossible}")
+  public String STRIPE_UPDATE_COMPTE_IMPOSSIBLE;
+  @Value("${retrieve.account.parameters.missing}")
+  public String RETRIEVE_ACCOUNT_PARAMETERS_MISSING;
 }
