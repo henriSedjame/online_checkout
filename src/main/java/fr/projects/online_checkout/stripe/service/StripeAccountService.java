@@ -1,6 +1,7 @@
 package fr.projects.online_checkout.stripe.service;
 
 import com.stripe.model.Account;
+import com.stripe.model.File;
 import fr.projects.online_checkout.stripe.exceptions.StripePaymentException;
 import reactor.core.publisher.Mono;
 
@@ -12,7 +13,7 @@ import java.util.Map;
  * @Date 28/10/2018
  * @Class purposes : .......
  */
-public interface StripeService {
+public interface StripeAccountService {
 
   /**
    * Methode permettant de créer un compte stripe
@@ -38,4 +39,22 @@ public interface StripeService {
    * @throws StripePaymentException
    */
   Mono<Account> updateAccount(String accountId, Map<String, Object> paramToUpdate);
+
+  /**
+   * Methode permettant de mettre à jour un compte stripe grace à un fichier contenant les données
+   *
+   * @param accountId
+   * @param dataFile
+   * @return
+   */
+  Mono<File> updateAccountUsingFile(String accountId, java.io.File dataFile);
+
+  /**
+   * Méthode permettant d'enregistrer l'accord des termes du contrat Stripe par la client
+   *
+   * @param accountId
+   * @return
+   */
+  Mono<Account> acceptServicesAgreement(String accountId);
+
 }

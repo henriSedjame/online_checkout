@@ -1,22 +1,27 @@
 package fr.projects.online_checkout.stripe.service.impl;
 
-import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Account;
+import com.stripe.model.File;
 import com.stripe.net.RequestOptions;
 import fr.projects.online_checkout.core.utils.RequireObjects;
 import fr.projects.online_checkout.stripe.configuration.StripeConfig;
 import fr.projects.online_checkout.stripe.exceptions.StripeExceptionBuilder;
 import fr.projects.online_checkout.stripe.exceptions.StripeExceptionMessages;
 import fr.projects.online_checkout.stripe.exceptions.StripePaymentException;
-import fr.projects.online_checkout.stripe.service.StripeService;
+import fr.projects.online_checkout.stripe.service.StripeAccountService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+
+import static fr.projects.online_checkout.stripe.model.StripeAccountParams.*;
 
 /**
  * @Project online_checkout
@@ -25,7 +30,8 @@ import java.util.Map;
  * @Class purposes : .......
  */
 @Service
-public class StripeServiceImpl implements StripeService {
+@Slf4j
+public class StripeAccountServiceImpl implements StripeAccountService {
 
   //********************************************************************************************************************
   // ATTRIBUTS
@@ -39,7 +45,7 @@ public class StripeServiceImpl implements StripeService {
   // CONSTRUCTEUR
   //********************************************************************************************************************
 
-  public StripeServiceImpl(StripeConfig config, StripeExceptionMessages exceptionMessages) {
+  public StripeAccountServiceImpl(StripeConfig config, StripeExceptionMessages exceptionMessages) {
     this.config = config;
     this.exceptionMessages = exceptionMessages;
     exceptionBuilder = new StripeExceptionBuilder(StripePaymentException.class);
@@ -48,6 +54,7 @@ public class StripeServiceImpl implements StripeService {
   //********************************************************************************************************************
   // METHODES
   //********************************************************************************************************************
+
   @Override
   public Mono<Account> createStripeAccount() {
     this.exceptionBuilder.clear();
@@ -67,16 +74,17 @@ public class StripeServiceImpl implements StripeService {
 
   }
 
+
   @Override
   public Mono<Account> retrieveAccount(String accountId) {
     this.exceptionBuilder.clear();
 
-    Stripe.clientId = accountId;
-
     RequireObjects.requireNotNull(Arrays.asList(accountId), this.exceptionBuilder, exceptionMessages.RETRIEVE_ACCOUNT_PARAMETERS_MISSING);
 
     if (this.exceptionBuilder.isEmpty()) {
-      RequestOptions options = RequestOptions.getDefault();
+      RequestOptions options = RequestOptions.builder()
+        .setStripeAccount(accountId)
+        .build();
       return Mono.defer(() -> {
         try {
           return Mono.just(Account.retrieve(accountId, options));
@@ -104,6 +112,55 @@ public class StripeServiceImpl implements StripeService {
         }
       }));
     }
+    return Mono.error(this.exceptionBuilder.buildException());
+  }
+
+  @Override
+  public Mono<File> updateAccountUsingFile(String accountId, java.io.File dataFile) {
+    this.exceptionBuilder.clear();
+
+    RequireObjects.requireNotNull(Arrays.asList(dataFile), this.exceptionBuilder, MessageFormat.format(this.exceptionMessages.UPDATE_DATA_FILE_MISSING, accountId));
+
+    if (this.exceptionBuilder.isEmpty()) {
+      Map<String, Object> fileParams = new HashMap<>();
+      fileParams.put("purpose", "");
+      fileParams.put("file", dataFile);
+
+      return Mono.defer(() -> {
+        try {
+          return Mono.just(File.create(fileParams));
+        } catch (Exception e) {
+          return Mono.error(this.exceptionBuilder.buildException(MessageFormat.format(exceptionMessages.STRIPE_UPDATE_COMPTE_IMPOSSIBLE, accountId), e));
+        }
+      });
+    }
+    return Mono.error(this.exceptionBuilder.buildException());
+  }
+
+  @Override
+  public Mono<Account> acceptServicesAgreement(String accountId) {
+    this.exceptionBuilder.clear();
+
+    RequireObjects.requireNotNull(Arrays.asList(accountId), this.exceptionBuilder, exceptionMessages.RETRIEVE_ACCOUNT_PARAMETERS_MISSING);
+
+    if (this.exceptionBuilder.isEmpty()) {
+
+      String clientIpAddress;
+      try {
+        clientIpAddress = InetAddress.getLocalHost().getHostAddress();
+      } catch (UnknownHostException e) {
+        return Mono.error(this.exceptionBuilder.buildException(exceptionMessages.CLIENT_IP_RETRIEVE_IMPOSSIBLE, e));
+      }
+
+      Map<String, Object> tosAcceptanceParams = new HashMap<>();
+      tosAcceptanceParams.put(ACCEPTANCE_DATE, (long) System.currentTimeMillis() / 1000L);
+      tosAcceptanceParams.put(ACCEPTANCE_IP, clientIpAddress);
+      Map<String, Object> params = new HashMap<>();
+      params.put(TOS_ACCEPTANCE, params);
+
+      return this.updateAccount(accountId, params);
+    }
+
     return Mono.error(this.exceptionBuilder.buildException());
   }
 

@@ -17,7 +17,8 @@ public class StripeAspect {
     Stripe.apiKey = "sk_test_loMFrgA9NHBdvGjarRw76ntt";
   }
 
-  @Pointcut("execution(public * fr.projects.online_checkout.stripe.service.impl.StripeServiceImpl.*(..))")
+  @Pointcut("execution(public * fr.projects.online_checkout.stripe.service.impl.StripeAccountServiceImpl.*(..))")
   public void stripePointCut() {
   }
+
 }

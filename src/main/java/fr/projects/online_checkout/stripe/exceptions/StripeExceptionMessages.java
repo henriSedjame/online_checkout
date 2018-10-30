@@ -21,4 +21,7 @@ public class StripeExceptionMessages {
   public String STRIPE_UPDATE_COMPTE_IMPOSSIBLE;
   @Value("${retrieve.account.parameters.missing}")
   public String RETRIEVE_ACCOUNT_PARAMETERS_MISSING;
+  @Value("${client.ip.address.retrieve.impossible}")
+  public String CLIENT_IP_RETRIEVE_IMPOSSIBLE;
+  public String UPDATE_DATA_FILE_MISSING;
 }

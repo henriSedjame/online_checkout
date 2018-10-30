@@ -61,6 +61,7 @@ public abstract class ExceptionBuilder<T extends Exception> {
    * Méthode permettant de vider la liste des arguments du builder
    */
   public void clear() {
+    log.info("ExceptionBuilder is going to be clear");
     this.exceptions.clear();
   }
 

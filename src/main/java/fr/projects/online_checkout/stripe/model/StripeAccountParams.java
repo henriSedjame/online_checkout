@@ -1,8 +1,12 @@
-package fr.projects.online_checkout.core.model;
+package fr.projects.online_checkout.stripe.model;
 
 
 public class StripeAccountParams {
 
+  /**
+   * Pour plus d'infos :
+   * https://stripe.com/docs/connect/required-verification-information
+   */
   public static final String EXTERNAL_ACCOUNT = "external_account";
 
   public static final String ADDITIONAL_OWNERS = "legal_entity.additional_owners";
@@ -35,8 +39,10 @@ public class StripeAccountParams {
 
   public static final String ENTITY_TYPE = "legal_entity.type";
 
-  public static final String ACCEPTANCE_DATE = "tos_acceptance.date";
+  public static final String TOS_ACCEPTANCE = "tos_acceptance";
 
-  public static final String ACCEPTANCE_IP = "tos_acceptance.ip";
+  public static final String ACCEPTANCE_DATE = "date";
+
+  public static final String ACCEPTANCE_IP = "ip";
 
 }
