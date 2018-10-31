@@ -1,6 +1,8 @@
 package fr.projects.online_checkout.stripe.service;
 
+import com.stripe.exception.StripeException;
 import com.stripe.model.Account;
+import com.stripe.model.CountrySpec;
 import com.stripe.model.File;
 import fr.projects.online_checkout.stripe.exceptions.StripePaymentException;
 import reactor.core.publisher.Mono;
@@ -57,4 +59,5 @@ public interface StripeAccountService {
    */
   Mono<Account> acceptServicesAgreement(String accountId);
 
+  CountrySpec getStripeSpecificication(String countryCode) throws StripeException;
 }

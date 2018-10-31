@@ -2,6 +2,7 @@ package fr.projects.online_checkout.stripe.service.impl;
 
 import com.stripe.exception.StripeException;
 import com.stripe.model.Account;
+import com.stripe.model.CountrySpec;
 import com.stripe.model.File;
 import com.stripe.net.RequestOptions;
 import fr.projects.online_checkout.core.utils.RequireObjects;
@@ -73,7 +74,6 @@ public class StripeAccountServiceImpl implements StripeAccountService {
     });
 
   }
-
 
   @Override
   public Mono<Account> retrieveAccount(String accountId) {
@@ -162,6 +162,12 @@ public class StripeAccountServiceImpl implements StripeAccountService {
     }
 
     return Mono.error(this.exceptionBuilder.buildException());
+  }
+
+  @Override
+  public CountrySpec getStripeSpecificication(String countryCode) throws StripeException {
+
+    return CountrySpec.retrieve(countryCode);
   }
 
   //********************************************************************************************************************

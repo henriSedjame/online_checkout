@@ -26,6 +26,14 @@
     <org.mapstruct.version>1.2.0.CR2</org.mapstruct.version>
     <springfox-swagger.version>2.7.0</springfox-swagger.version>
     <aspectj.version>1.7.4</aspectj.version>
+    <auto-service.version>1.0-rc2</auto-service.version>
+    <j-unit-jupiter.version>5.1.0</j-unit-jupiter.version>
+    <org-json.version>20140107</org-json.version>
+    <stripe.version>7.0.0</stripe.version>
+    <org-apache-commons-lang.version>3.7</org-apache-commons-lang.version>
+    <org-apache-commons-collections.version>4.1</org-apache-commons-collections.version>
+    <apache-velocity.version>1.7</apache-velocity.version>
+    <apache-velocity-tools.version>2.0</apache-velocity-tools.version>
   </properties>
 
   <dependencies>
@@ -81,13 +89,13 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.1.0</version>
+      <version>${j-unit-jupiter.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
-      <version>5.1.0</version>
+      <version>${j-unit-jupiter.version}</version>
       <scope>test</scope>
     </dependency>
 
@@ -95,7 +103,7 @@
     <dependency>
       <groupId>org.json</groupId>
       <artifactId>json</artifactId>
-      <version>20140107</version>
+      <version>${org-json.version}</version>
     </dependency>
 
     <!-- Papal SDK -->
@@ -109,19 +117,19 @@
     <dependency>
       <groupId>com.stripe</groupId>
       <artifactId>stripe-java</artifactId>
-      <version>7.0.0</version>
+      <version>${stripe.version}</version>
     </dependency>
 
     <!-- Apache Commons -->
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
-      <version>3.7</version>
+      <version>${org-apache-commons-lang.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-collections4</artifactId>
-      <version>4.1</version>
+      <version>${org-apache-commons-collections.version}</version>
     </dependency>
 
     <!-- Kotlin -->
@@ -161,6 +169,26 @@
       <version>${springfox-swagger.version}</version>
     </dependency>-->
 
+    <dependency>
+      <groupId>com.google.auto.service</groupId>
+      <artifactId>auto-service</artifactId>
+      <version>${auto-service.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.velocity</groupId>
+      <artifactId>velocity</artifactId>
+      <version>${apache-velocity.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.velocity</groupId>
+      <artifactId>velocity-tools</artifactId>
+      <version>${apache-velocity-tools.version}</version>
+    </dependency>
+
+
   </dependencies>
 
   <build>
@@ -180,6 +208,8 @@
     </pluginManagement>
 
     <plugins>
+
+      <!-- Spring boot maven plugin-->
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
