@@ -40,7 +40,7 @@ jobs:
     # run tests!
     - run:
         name: run tests
-        command: mvn clean verify
+        command: mvn verify
     - run:
         name: Save tests results
         command: |
