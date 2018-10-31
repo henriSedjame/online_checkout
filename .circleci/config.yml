@@ -39,8 +39,8 @@ jobs:
 
     # run tests!
     - run:
-        name: run tests
-        command: mvn verify
+        name: run compile
+        command: mvn compile
     - run:
         name: Save tests results
         command: |
