@@ -23,7 +23,7 @@ public interface StripeAccountService {
    * @return
    * @throws StripePaymentException
    */
-  Mono<Account> createStripeAccount();
+  Mono<Account> createStripeAccount(String countryCode, String accountType, String token);
 
   /**
    * Méthode permettant de récupérer un compte client Stripe grâce à l'id du compte
@@ -50,6 +50,14 @@ public interface StripeAccountService {
    * @return
    */
   Mono<File> updateAccountUsingFile(String accountId, java.io.File dataFile);
+
+  /**
+   * Méthode permetant de supprimer un compte stripe
+   *
+   * @param accountId
+   * @return
+   */
+  Mono<Account> deleteAccount(String accountId);
 
   /**
    * Méthode permettant d'enregistrer l'accord des termes du contrat Stripe par la client

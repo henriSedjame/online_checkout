@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+<form class="my-form" action="/create-account" method="post">
+  <input type="hidden" name="token" id="token">
+  <label>
+    <span>First Name</span>
+    <input class="inp-first-name" name="first_name">
+  </label>
+  <label>
+    <span>Last Name</span>
+    <input class="inp-last-name" name="last_name">
+  </label>
+  <fieldset>
+    <legend>Address</legend>
+    <label>
+      <span>Street Address Line 1</span>
+      <input class="inp-street-address1" name="street_address1">
+    </label>
+    <label>
+      <span>City</span>
+      <input class="inp-city" name="city">
+    </label>
+    <label>
+      <span>State</span>
+      <input class="inp-state" name="state">
+    </label>
+    <label>
+      <span>Postal Code</span>
+      <input class="inp-zip" name="zip">
+    </label>
+  </fieldset>
+  <button>Submit</button>
+  <p>By clicking, you agree to <a href="#">our terms</a> and the <a href="/connect-account/legal">Stripe Connected
+    Account Agreement</a>.</p>
+</form>
+<script>
+  const stripe = Stripe('pk_test_UN7h5G9yv5OY7fvelhq1OGhA');
+  const myForm = document.querySelector('.my-form');
+  myForm.addEventListener('submit', handleForm);
+
+  async function handleForm(event) {
+    event.preventDefault();
+
+    const result = await stripe.createToken('account', {
+      legal_entity: {
+        first_name: document.querySelector('.inp-first-name').value,
+        last_name: document.querySelector('.inp-last-name').value,
+        address: {
+          line1: document.querySelector('.inp-street-address1').value,
+          city: document.querySelector('.inp-city').value,
+          state: document.querySelector('.inp-state').value,
+          postal_code: document.querySelector('.inp-zip').value,
+        },
+      },
+      tos_shown_and_accepted: true,
+    });
+
+    if (result.token) {
+      document.querySelector('#token').value = result.token.id;
+      alert(result.token.id);
+      myForm.submit();
+    }
+  }
+</script>
+</body>
+</html>
